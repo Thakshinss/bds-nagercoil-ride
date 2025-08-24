@@ -8,6 +8,7 @@ import Homepage from "./pages/Homepage";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Cars from "./pages/Cars";
+import Prices from "./pages/Prices";
 import NotFound from "./pages/NotFound";
 import Navigation from "./components/Navigation";
 import ScrollingBanner from "./components/ScrollingBanner";
@@ -28,6 +29,7 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Homepage />} />
               <Route path="/cars" element={<Cars />} />
+              <Route path="/prices" element={<Prices />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
