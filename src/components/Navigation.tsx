@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Menu, X, Phone } from 'lucide-react';
+import cabimg from "../assets/bds_logo.png"
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,10 +21,14 @@ const Navigation = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <NavLink to="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-lg">B</span>
+            <div className="w-16 h-16 rounded-lg flex items-center justify-center">
+            <img
+              src={cabimg}
+              alt="Cab booking illustration"
+              className="w-full max-w-md"
+            />
             </div>
-            <span className="text-xl font-bold text-foreground">BDS Cabs</span>
+            <span className="text-xl font-bold text-foreground text-blue-950">BDS Cabs</span>
           </NavLink>
 
           {/* Desktop Navigation */}

@@ -36,19 +36,19 @@ const Contact = () => {
     {
       icon: Phone,
       title: 'Phone Number',
-      details: '+91 98765 43210',
+      details: '+91 9790532574',
       action: 'Call Now'
     },
     {
       icon: MessageCircle,
       title: 'WhatsApp Booking',
-      details: '+91 98765 43210',
+      details: '+91 9790532574',
       action: 'WhatsApp'
     },
     {
       icon: Mail,
       title: 'Email',
-      details: 'info@bdscabs.com',
+      details: 'bdscabnagercoil@gmail.com',
       action: 'Send Email'
     },
     {
@@ -218,7 +218,7 @@ const Contact = () => {
                   </div>
                   <div className="mt-6 p-4 bg-primary/10 rounded-lg">
                     <p className="text-sm text-primary font-medium">
-                      🚗 For immediate booking, call or WhatsApp us at +91 98765 43210
+                      🚗 For immediate booking, call or WhatsApp us at +91 9790532574
                     </p>
                   </div>
                 </CardContent>
@@ -242,16 +242,16 @@ const Contact = () => {
               className="bg-secondary hover:bg-secondary-dark text-lg px-8 py-6"
             >
               <Phone className="mr-2 w-5 h-5" />
-              Call +91 98765 43210
+              Call +91 9790532574
             </Button>
-            <Button 
+            {/* <Button 
               size="lg" 
               variant="outline" 
               className="border-white text-white hover:bg-white hover:text-primary text-lg px-8 py-6"
             >
               <MessageCircle className="mr-2 w-5 h-5" />
               WhatsApp Booking
-            </Button>
+            </Button> */}
           </div>
         </div>
       </section>

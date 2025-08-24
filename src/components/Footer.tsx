@@ -32,7 +32,7 @@ const Footer = () => {
             </div>
             <p className="text-gray-300 text-sm">
               Best cab service in Nagercoil. Safe, reliable, and affordable taxi service available 24/7. 
-              Your trusted transportation partner since 2016.
+              Your trusted transportation partner since 2020.
             </p>
             <div className="flex space-x-4">
               <Facebook className="w-5 h-5 text-gray-400 hover:text-primary cursor-pointer transition-colors" />
@@ -77,7 +77,7 @@ const Footer = () => {
               <div className="flex items-start space-x-3">
                 <Phone className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                 <div>
-                  <p className="text-gray-300 text-sm">+91 98765 43210</p>
+                  <p className="text-gray-300 text-sm">+91 9790532574</p>
                   <p className="text-gray-400 text-xs">24/7 Booking</p>
                 </div>
               </div>
@@ -109,9 +109,9 @@ const Footer = () => {
       <div className="border-t border-gray-700">
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="text-gray-400 text-sm text-center md:text-left">
-              © 2024 BDS Cabs. All rights reserved. Best cab service in Nagercoil.
-            </div>
+          <div className="text-gray-400 text-sm text-center md:text-left">
+            © {new Date().getFullYear()} BDS Cabs. All rights reserved. Best cab service in Nagercoil.
+          </div>
             <div className="flex space-x-6 text-sm">
               <a href="#" className="text-gray-400 hover:text-primary transition-colors">Privacy Policy</a>
               <a href="#" className="text-gray-400 hover:text-primary transition-colors">Terms of Service</a>

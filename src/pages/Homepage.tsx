@@ -3,25 +3,37 @@ import { Card, CardContent } from '@/components/ui/card';
 import { ArrowRight, Star, Clock, Shield, Phone } from 'lucide-react';
 import heroBackground from '@/assets/hero-taxi-background.jpg';
 import BookingForm from '@/components/BookingForm';
+import van from "../assets/van.jpeg"
+import cabimg from "../assets/bds_logo.png"
+
+import dezire from  "../assets/dezire.jpeg"
+import traveller from "../assets/tempo.jpeg"
+import innova from "../assets/innova.jpeg"
 
 const Homepage = () => {
   const fleet = [
+    // {
+    //   name: 'Auto Ricksaw',
+    //   price: '₹10/km',
+    //   image: innova,
+    //   features: ['AC', '4 Seater', 'Economic']
+    // },
     {
       name: 'Sedan',
       price: '₹12/km',
-      image: '/placeholder.svg',
+      image: dezire,
       features: ['AC', '4 Seater', 'Comfortable']
     },
     {
       name: 'SUV',
       price: '₹18/km',
-      image: '/placeholder.svg',
+      image: traveller,
       features: ['AC', '7 Seater', 'Spacious']
     },
     {
       name: 'Hatchback',
       price: '₹10/km',
-      image: '/placeholder.svg',
+      image: innova,
       features: ['AC', '4 Seater', 'Economic']
     }
   ];
@@ -56,7 +68,7 @@ const Homepage = () => {
         <div className="absolute inset-0 bg-gradient-overlay"></div>
         <div className="relative z-10 px-4 max-w-7xl mx-auto">
           <div className="text-center text-white mb-12">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight pt-16">
               BDS Cabs - Best Cab Service in 
               <span className="text-secondary"> Nagercoil</span>
             </h1>
@@ -67,7 +79,7 @@ const Homepage = () => {
               <Button 
                 variant="outline" 
                 size="lg" 
-                className="text-white border-white hover:bg-white hover:text-primary text-lg px-8 py-6"
+                className="text-blue-900 border-white hover:bg-white hover:text-primary text-lg px-8 py-6"
               >
                 <Phone className="mr-2 w-5 h-5" />
                 Call +91 98765 43210
@@ -114,7 +126,16 @@ const Homepage = () => {
               <Card key={index} className="hover-lift shadow-custom-md hover:shadow-custom-xl">
                 <CardContent className="p-6">
                   <div className="aspect-video bg-muted rounded-lg mb-4 flex items-center justify-center">
-                    <span className="text-muted-foreground">Car Image</span>
+                    <img 
+                        src={car.image} 
+                        alt={car.name}
+                        className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      {/* <img 
+        src={car.image} 
+        alt={car.name}
+        className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+      /> */}
                   </div>
                   <h3 className="text-xl font-semibold mb-2">{car.name}</h3>
                   <p className="text-2xl font-bold text-primary mb-4">{car.price}</p>
@@ -128,9 +149,9 @@ const Homepage = () => {
                       </span>
                     ))}
                   </div>
-                  <Button className="w-full bg-gradient-primary hover:bg-primary-dark">
+                  {/* <Button className="w-full bg-gradient-primary hover:bg-primary-dark">
                     Book This Car
-                  </Button>
+                  </Button> */}
                 </CardContent>
               </Card>
             ))}
@@ -154,13 +175,13 @@ const Homepage = () => {
             >
               Book Online
             </Button>
-            <Button 
+            {/* <Button 
               variant="outline" 
               size="lg" 
               className="text-white border-white hover:bg-white hover:text-primary text-lg px-8 py-6"
             >
               WhatsApp Booking
-            </Button>
+            </Button> */}
           </div>
         </div>
       </section>

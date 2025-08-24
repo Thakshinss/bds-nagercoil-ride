@@ -4,6 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { format } from 'date-fns';
 import { CalendarIcon, MapPin, User, Phone, Car, MessageSquare, Clock } from 'lucide-react';
+import emailjs from "@emailjs/browser";
+
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -63,19 +65,148 @@ const BookingForm = () => {
     },
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState('');
+
   const onSubmit = (data: BookingFormData) => {
     console.log('Booking data:', data);
     toast({
       title: 'Booking Request Submitted',
       description: 'We will contact you shortly to confirm your booking.',
     });
+    sendEmail(data)
     form.reset();
   };
 
+
+  const sendEmail = async (formData: BookingFormData) => {
+    console.log("Sending email with data:", formData);
+  
+    setIsSubmitting(true);
+    setSubmitStatus('');
+  
+    try {
+      // Replace these with your actual EmailJS credentials
+      const serviceId = 'service_k778iw9';
+      const templateId = 'template_kqu4po7';
+      const publicKey = 'sZdi8W7DdkDXusuSB';
+  
+      // Initialize EmailJS
+      emailjs.init(publicKey);
+  
+      const templateParams = {
+        to_name: "Taxi Service",
+        customer_name: formData.name,
+        mobile_number: formData.mobile,
+        taxi_type: formData.vehicleType,
+        trip_type: formData.tripType,
+        pickup_location: formData.pickup,
+        drop_location: formData.drop,
+        booking_date: formData.date ? formData.date.toDateString() : "",
+        booking_time: formData.time,
+        customer_message: formData.message || "",
+      };
+  
+      console.log("Template params:", templateParams);
+  
+      await emailjs.send(serviceId, templateId, templateParams);
+  
+      setSubmitStatus('success');
+      toast({
+        title: "Booking Request Sent ✅",
+        description: "We’ll contact you soon to confirm your ride.",
+      });
+    } catch (error) {
+      console.error("EmailJS Error:", error);
+      setSubmitStatus('error');
+      toast({
+        title: "Error ❌",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // const sendEmail = async (formData) => {
+  //   console.log(formData,"formData")
+  //   // Basic validation
+  //   if (!formData.name || !formData.mobile || !formData.taxiType || !formData.members || 
+  //       !formData.tripType || !formData.pickupLocation || !formData.dropLocation || 
+  //       !formData.date || !formData.time) {
+  //     setSubmitStatus('validation');
+  //     return;
+  //   }
+
+  //   setIsSubmitting(true);
+  //   setSubmitStatus('');
+
+  //   try {
+  //     // Replace these with your actual EmailJS credentials
+  //     const serviceId = 'service_k778iw9';
+  //     const templateId = 'template_kqu4po7';
+  //     const publicKey = 'sZdi8W7DdkDXusuSB';
+
+  //     // Load EmailJS dynamically
+  //     if (!window.emailjs) {
+  //       const script = document.createElement('script');
+  //       script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js';
+  //       document.head.appendChild(script);
+        
+  //       await new Promise((resolve) => {
+  //         script.onload = resolve;
+  //       });
+        
+  //       window.emailjs.init(publicKey);
+  //     }
+
+  //     const templateParams = {
+  //       to_name: 'Taxi Service',
+  //       from_name: formData.name,
+  //       customer_name: formData.name,
+  //       mobile_number: formData.mobile,
+  //       taxi_type: formData.taxiType,
+  //       number_of_members: formData.members,
+  //       trip_type: formData.tripType,
+  //       pickup_location: formData.pickupLocation,
+  //       drop_location: formData.dropLocation,
+  //       booking_date: formData.date,
+  //       booking_time: formData.time,
+  //       customer_message: formData.message,
+  //       reply_to: formData.mobile
+  //     };
+  //     console.log(templateParams,"template params")
+
+  //     await window.emailjs.send(serviceId, templateId, templateParams);
+      
+  //     setSubmitStatus('success');
+  //     console.log(submitStatus,"ststus");
+  //     // setFormData({
+  //     //   name: '',
+  //     //   mobile: '',
+  //     //   taxiType: '',
+  //     //   members: '',
+  //     //   tripType: '',
+  //     //   pickupLocation: '',
+  //     //   dropLocation: '',
+  //     //   date: '',
+  //     //   time: '',
+  //     //   message: ''
+  //     // });
+  //   } catch (error) {
+  //     console.error('EmailJS Error:', error);
+  //     setSubmitStatus('error');
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
+
+
   return (
-    <div className="bg-background/95 backdrop-blur-sm border border-border rounded-lg p-6 shadow-custom-lg max-w-4xl mx-auto">
+    <div className="bg-background/95 backdrop-blur-sm border border-border rounded-lg p-6 shadow-custom-lg max-w-4xl mx-auto mb-14">
       <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold text-foreground mb-2">Book Your Ride</h2>
+        <h2 className="text-2xl font-bold text-foreground mb-2">Book Your <span className="text-secondary">Ride</span></h2>
         <p className="text-muted-foreground">Fill in the details to book your cab instantly</p>
       </div>
 
@@ -179,7 +310,7 @@ const BookingForm = () => {
                           ) : (
                             <span>Pick a date</span>
                           )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          <CalendarIcon className="ml-auto h-4 w-4" />
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
@@ -190,7 +321,7 @@ const BookingForm = () => {
                         onSelect={field.onChange}
                         disabled={(date) => date < new Date()}
                         initialFocus
-                        className="p-3 pointer-events-auto"
+                        className="p-3 bg-white text-black opacity-100 pointer-events-auto shadow-lg rounded-md"
                       />
                     </PopoverContent>
                   </Popover>
@@ -233,11 +364,12 @@ const BookingForm = () => {
                         <SelectValue placeholder="Select vehicle type" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
-                      <SelectItem value="hatchback">Hatchback</SelectItem>
-                      <SelectItem value="sedan">Sedan</SelectItem>
-                      <SelectItem value="suv">SUV</SelectItem>
-                      <SelectItem value="luxury">Luxury</SelectItem>
+                    <SelectContent className="p-3 bg-white text-black opacity-100 pointer-events-auto shadow-lg rounded-md">
+                      <SelectItem value="Auto">Hatchback</SelectItem>
+                      <SelectItem value="car">Sedan</SelectItem>
+                      <SelectItem value="innova">Innova</SelectItem>
+                      <SelectItem value="tempo traveller">Tempo Traveller</SelectItem>
+                      <SelectItem value="coach van">Coach Van</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
