@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowRight, Star, Clock, Shield, Phone } from 'lucide-react';
 import heroBackground from '@/assets/hero-taxi-background.jpg';
+import BookingForm from '@/components/BookingForm';
 
 const Homepage = () => {
   const fleet = [
@@ -53,28 +54,29 @@ const Homepage = () => {
         }}
       >
         <div className="absolute inset-0 bg-gradient-overlay"></div>
-        <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-            BDS Cabs - Best Cab Service in 
-            <span className="text-secondary"> Nagercoil</span>
-          </h1>
-          <p className="text-xl md:text-2xl mb-8 text-gray-200">
-            Safe, Reliable & Affordable Taxi Service Available 24/7
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-gradient-secondary hover:bg-secondary-dark text-lg px-8 py-6 hover-glow">
-              Book Now
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="text-white border-white hover:bg-white hover:text-primary text-lg px-8 py-6"
-            >
-              <Phone className="mr-2 w-5 h-5" />
-              Call +91 98765 43210
-            </Button>
+        <div className="relative z-10 px-4 max-w-7xl mx-auto">
+          <div className="text-center text-white mb-12">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+              BDS Cabs - Best Cab Service in 
+              <span className="text-secondary"> Nagercoil</span>
+            </h1>
+            <p className="text-xl md:text-2xl mb-8 text-gray-200">
+              Safe, Reliable & Affordable Taxi Service Available 24/7
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="text-white border-white hover:bg-white hover:text-primary text-lg px-8 py-6"
+              >
+                <Phone className="mr-2 w-5 h-5" />
+                Call +91 98765 43210
+              </Button>
+            </div>
           </div>
+          
+          {/* Booking Form */}
+          <BookingForm />
         </div>
       </section>
 
