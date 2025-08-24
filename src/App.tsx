@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,6 +11,7 @@ import Cars from "./pages/Cars";
 import NotFound from "./pages/NotFound";
 import Navigation from "./components/Navigation";
 import ScrollingBanner from "./components/ScrollingBanner";
+import Footer from "./components/Footer";
 
 const queryClient = new QueryClient();
 
@@ -19,17 +21,20 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <div className="min-h-screen">
+        <div className="min-h-screen flex flex-col">
           <ScrollingBanner />
           <Navigation />
-          <Routes>
-            <Route path="/" element={<Homepage />} />
-            <Route path="/cars" element={<Cars />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <main className="flex-1">
+            <Routes>
+              <Route path="/" element={<Homepage />} />
+              <Route path="/cars" element={<Cars />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </main>
+          <Footer />
         </div>
       </BrowserRouter>
     </TooltipProvider>
