@@ -13,6 +13,7 @@ import NotFound from "./pages/NotFound";
 import Navigation from "./components/Navigation";
 import ScrollingBanner from "./components/ScrollingBanner";
 import Footer from "./components/Footer";
+import WhatsAppButton from "./components/WhatsAppButton";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ const App = () => (
             </Routes>
           </main>
           <Footer />
+          <WhatsAppButton />
         </div>
       </BrowserRouter>
     </TooltipProvider>
