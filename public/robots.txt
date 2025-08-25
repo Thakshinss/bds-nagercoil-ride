@@ -12,3 +12,9 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+# Sitemap
+Sitemap: https://bdscabs.com/sitemap.xml
+
+# Additional directives for SEO
+Crawl-delay: 1
