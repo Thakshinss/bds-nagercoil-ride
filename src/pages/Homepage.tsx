@@ -3,6 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { ArrowRight, Star, Clock, Shield, Phone } from 'lucide-react';
 import heroBackground from '@/assets/hero-taxi-background.jpg';
 import BookingForm from '@/components/BookingForm';
+import { Helmet } from 'react-helmet-async';
 import van from "../assets/van.jpeg"
 import cabimg from "../assets/bds_logo.png"
 
@@ -58,6 +59,16 @@ const Homepage = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>BDS Cabs - Best Taxi Service in Nagercoil | Book Online</title>
+        <meta name="description" content="BDS Cabs offers premium taxi services in Nagercoil. Book affordable, reliable cabs online. 24/7 service, best rates, professional drivers. Call now for instant booking!" />
+        <meta name="keywords" content="bdscabs, taxi in nagercoil, cabs, bds, cab near me, best cabs, auto rickshaw near me, nagercoil taxi, online cab booking, affordable taxi, reliable cab service" />
+        <meta property="og:title" content="BDS Cabs - Best Taxi Service in Nagercoil" />
+        <meta property="og:description" content="Premium taxi services in Nagercoil. Book online for best rates, 24/7 service, and professional drivers." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://bdscabs.com" />
+        <link rel="canonical" href="https://bdscabs.com" />
+      </Helmet>
       {/* Hero Section */}
       <section 
         className="relative min-h-[80vh] flex items-center justify-center bg-cover bg-center"

@@ -6,6 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { MapPin, Phone, Mail, Clock, MessageCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { Helmet } from 'react-helmet-async';
 
 const Contact = () => {
   const { toast } = useToast();
@@ -61,6 +62,14 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>Contact BDS Cabs - 24/7 Taxi Booking | Nagercoil</title>
+        <meta name="description" content="Contact BDS Cabs for immediate taxi booking in Nagercoil. 24/7 customer support, emergency service available. Call now or book online!" />
+        <meta name="keywords" content="contact bds cabs, taxi booking nagercoil, emergency taxi, 24/7 cab service, nagercoil taxi contact, cab booking phone" />
+        <meta property="og:title" content="Contact BDS Cabs - 24/7 Taxi Booking" />
+        <meta property="og:description" content="Get in touch with BDS Cabs for reliable taxi service in Nagercoil. 24/7 support and emergency service available." />
+        <link rel="canonical" href="https://bdscabs.com/contact" />
+      </Helmet>
       {/* Hero Section */}
       <section className="bg-gradient-hero text-white py-20">
         <div className="container mx-auto px-4">

@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Users, Fuel, Wind, Star } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const Cars = () => {
   const vehicles = [
@@ -93,6 +94,14 @@ const Cars = () => {
 
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>Our Fleet - Premium Cars & Vehicles | BDS Cabs Nagercoil</title>
+        <meta name="description" content="Choose from our premium fleet of cars in Nagercoil. Economy, Sedan, SUV options available. Well-maintained vehicles, professional drivers, competitive rates." />
+        <meta name="keywords" content="bds cabs fleet, cars nagercoil, taxi vehicles, sedan booking, suv rental, economy cars, premium vehicles, nagercoil car rental" />
+        <meta property="og:title" content="Our Fleet - Premium Cars & Vehicles | BDS Cabs" />
+        <meta property="og:description" content="Premium fleet of cars in Nagercoil. Economy to luxury vehicles available for all your travel needs." />
+        <link rel="canonical" href="https://bdscabs.com/cars" />
+      </Helmet>
       {/* Hero Section */}
       <section className="bg-gradient-hero text-white py-20">
         <div className="container mx-auto px-4">

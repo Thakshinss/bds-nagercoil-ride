@@ -1,5 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Users, MapPin, Clock, Award } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const About = () => {
   const stats = [
@@ -34,6 +35,14 @@ const About = () => {
 
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>About BDS Cabs - Leading Taxi Service in Nagercoil Since 2016</title>
+        <meta name="description" content="Learn about BDS Cabs, Nagercoil's trusted taxi service since 2016. 5,000+ happy customers, 50+ vehicles, 24/7 service. Your reliable transportation partner." />
+        <meta name="keywords" content="bds cabs about, taxi company nagercoil, cab service history, reliable taxi, professional drivers, nagercoil transport" />
+        <meta property="og:title" content="About BDS Cabs - Leading Taxi Service in Nagercoil" />
+        <meta property="og:description" content="Trusted taxi service in Nagercoil since 2016. 5,000+ customers, professional service, 24/7 availability." />
+        <link rel="canonical" href="https://bdscabs.com/about" />
+      </Helmet>
       {/* Hero Section */}
       <section className="bg-gradient-hero text-white py-20">
         <div className="container mx-auto px-4">

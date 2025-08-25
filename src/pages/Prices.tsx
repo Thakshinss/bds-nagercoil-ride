@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { Helmet } from 'react-helmet-async';
 
 const Prices = () => {
   const priceData = [
@@ -29,6 +30,14 @@ const Prices = () => {
 
   return (
     <div className="min-h-screen bg-background py-12">
+      <Helmet>
+        <title>Taxi Fare & Pricing - Affordable Rates | BDS Cabs Nagercoil</title>
+        <meta name="description" content="Check transparent taxi fares and pricing for BDS Cabs in Nagercoil. No hidden charges, best rates, 24/7 service. Book your affordable cab ride today!" />
+        <meta name="keywords" content="taxi fare nagercoil, cab pricing, bds cabs rates, affordable taxi, cheap cab fare, taxi cost nagercoil, transparent pricing" />
+        <meta property="og:title" content="Taxi Fare & Pricing - Affordable Rates | BDS Cabs" />
+        <meta property="og:description" content="Transparent taxi pricing in Nagercoil. No hidden charges, competitive rates for all destinations." />
+        <link rel="canonical" href="https://bdscabs.com/prices" />
+      </Helmet>
       <div className="container mx-auto px-4">
         {/* Header Section */}
         <div className="text-center mb-12">
