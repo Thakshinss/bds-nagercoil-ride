@@ -80,7 +80,7 @@ const Homepage = () => {
         <div className="relative z-10 px-4 max-w-7xl mx-auto">
           <div className="text-center text-white mb-12">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight pt-16">
-              BDS Cabs - Best Taxi & Cab Service  Near Me in 
+              BDS Cabs & Travels - Best Taxi & Cab Service in 
               <span className="text-secondary"> Tamilnadu</span>
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-gray-200">
