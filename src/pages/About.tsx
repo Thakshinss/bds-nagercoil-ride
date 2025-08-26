@@ -12,22 +12,22 @@ const About = () => {
 
   const timeline = [
     {
-      year: '2016',
+      year: '2018',
       title: 'BDS Cabs Founded',
-      description: 'Started with a vision to provide reliable taxi service in Nagercoil'
+      description: 'Started with a vision to provide reliable taxi service in Tamilnadu'
     },
     {
-      year: '2018',
+      year: '2020',
       title: 'Fleet Expansion',
       description: 'Expanded our fleet to 25+ vehicles serving more customers'
     },
     {
-      year: '2020',
+      year: '2022',
       title: '24/7 Service Launch',
       description: 'Introduced round-the-clock taxi service for customer convenience'
     },
     {
-      year: '2023',
+      year: '2025',
       title: 'Technology Integration',
       description: 'Launched online booking system and mobile app for easy access'
     }
@@ -36,11 +36,11 @@ const About = () => {
   return (
     <div className="min-h-screen">
       <Helmet>
-        <title>About BDS Cabs - Leading Taxi Service in Nagercoil Since 2016</title>
-        <meta name="description" content="Learn about BDS Cabs, Nagercoil's trusted taxi service since 2016. 5,000+ happy customers, 50+ vehicles, 24/7 service. Your reliable transportation partner." />
-        <meta name="keywords" content="bds cabs about, taxi company nagercoil, cab service history, reliable taxi, professional drivers, nagercoil transport" />
-        <meta property="og:title" content="About BDS Cabs - Leading Taxi Service in Nagercoil" />
-        <meta property="og:description" content="Trusted taxi service in Nagercoil since 2016. 5,000+ customers, professional service, 24/7 availability." />
+        <title>About BDS Cabs - Leading Taxi Service in Tamilnadu Since 2018</title>
+        <meta name="description" content="Learn about BDS Cabs, Tamilnadu's trusted taxi service since 2018. 5,000+ happy customers, 50+ vehicles, 24/7 service. Your reliable transportation partner." />
+        <meta name="keywords" content="bds cabs about, taxi company Tamilnadu, cab service history, reliable taxi, professional drivers, Tamilnadu transport" />
+        <meta property="og:title" content="About BDS Cabs - Leading Taxi Service in Tamilnadu" />
+        <meta property="og:description" content="Trusted taxi service in Tamilnadu since 2016. 5,000+ customers, professional service, 24/7 availability." />
         <link rel="canonical" href="https://bdscabs.com/about" />
       </Helmet>
       {/* Hero Section */}
@@ -51,7 +51,7 @@ const About = () => {
               About BDS Cabs
             </h1>
             <p className="text-xl md:text-2xl text-gray-200 leading-relaxed">
-              Your trusted partner for safe, reliable, and affordable cab service in Nagercoil. 
+              Your trusted partner for safe, reliable, and affordable cab service in Tamilnadu. 
               We've been serving the community with dedication and professionalism since 2016.
             </p>
           </div>
@@ -81,11 +81,11 @@ const About = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl font-bold text-foreground mb-6">
-                Best Cab Service in Nagercoil
+                Best Cab Service in Tamilnadu
               </h2>
               <div className="space-y-4 text-muted-foreground">
                 <p>
-                  BDS Cabs has been the premier choice for taxi service in Nagercoil for over 8 years. 
+                  BDS Cabs has been the premier choice for taxi service in Tamilnadu for over 8 years. 
                   We pride ourselves on providing safe, reliable, and affordable transportation solutions 
                   for residents and visitors alike.
                 </p>
@@ -96,7 +96,7 @@ const About = () => {
                 </p>
                 <p>
                   With our 24/7 service availability and competitive pricing, we've become the go-to 
-                  cab service in Nagercoil. Customer satisfaction is our top priority, and we continuously 
+                  cab service in Tamilnadu. Customer satisfaction is our top priority, and we continuously 
                   strive to exceed expectations.
                 </p>
               </div>
@@ -106,7 +106,7 @@ const About = () => {
                 <CardContent className="p-6">
                   <h3 className="text-xl font-semibold mb-3">Our Mission</h3>
                   <p className="text-muted-foreground">
-                    To provide safe, reliable, and affordable taxi service in Nagercoil while 
+                    To provide safe, reliable, and affordable taxi service in Tamilnadu while 
                     maintaining the highest standards of customer satisfaction and professionalism.
                   </p>
                 </CardContent>
@@ -133,7 +133,7 @@ const About = () => {
               Our Journey
             </h2>
             <p className="text-xl text-muted-foreground">
-              Milestones in our journey to become Nagercoil's best cab service
+              Milestones in our journey to become Tamilnadu's best cab service
             </p>
           </div>
           

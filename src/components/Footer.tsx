@@ -32,7 +32,7 @@ const Footer = () => {
             </div>
             <p className="text-gray-300 text-sm">
               Best cab service in Nagercoil. Safe, reliable, and affordable taxi service available 24/7. 
-              Your trusted transportation partner since 2020.
+              Your trusted transportation partner since 2018.
             </p>
             <div className="flex space-x-4">
               <Facebook className="w-5 h-5 text-gray-400 hover:text-primary cursor-pointer transition-colors" />

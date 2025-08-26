@@ -365,8 +365,8 @@ const BookingForm = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className="p-3 bg-white text-black opacity-100 pointer-events-auto shadow-lg rounded-md">
-                      <SelectItem value="Auto">Hatchback</SelectItem>
-                      <SelectItem value="car">Sedan</SelectItem>
+                      <SelectItem value="Auto">Auto</SelectItem>
+                      <SelectItem value="car">Car</SelectItem>
                       <SelectItem value="innova">Innova</SelectItem>
                       <SelectItem value="tempo traveller">Tempo Traveller</SelectItem>
                       <SelectItem value="coach van">Coach Van</SelectItem>

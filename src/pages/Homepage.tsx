@@ -60,11 +60,11 @@ const Homepage = () => {
   return (
     <div>
       <Helmet>
-        <title>BDS Cabs - Best Taxi Service in Nagercoil | Book Online</title>
+        <title>B D S Cabs & Travels - Best Cab/Taxi Service in Tamilnadu | Book Online</title>
         <meta name="description" content="BDS Cabs offers premium taxi services in Nagercoil. Book affordable, reliable cabs online. 24/7 service, best rates, professional drivers. Call now for instant booking!" />
-        <meta name="keywords" content="bdscabs, taxi in nagercoil, cabs, bds, cab near me, best cabs, auto rickshaw near me, nagercoil taxi, online cab booking, affordable taxi, reliable cab service" />
-        <meta property="og:title" content="BDS Cabs - Best Taxi Service in Nagercoil" />
-        <meta property="og:description" content="Premium taxi services in Nagercoil. Book online for best rates, 24/7 service, and professional drivers." />
+        <meta name="keywords" content="bdscabs, taxi in nagercoil, cabs, bds, cab near me, best cabs, auto rickshaw near me, nagercoil taxi, online cab booking, affordable taxi, reliable cab service,best cab service in Tamilnadu,tamilnadu cab,Tamilnadu cab" />
+        <meta property="og:title" content="B D S Cabs - Best Taxi Service in Tamilnadu" />
+        <meta property="og:description" content="Premium taxi services in Tamilnadu. Book online for best rates, 24/7 service, and professional drivers." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://bdscabs.com" />
         <link rel="canonical" href="https://bdscabs.com" />
@@ -81,19 +81,19 @@ const Homepage = () => {
           <div className="text-center text-white mb-12">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight pt-16">
               BDS Cabs - Best Taxi Service & Cab Near Me in 
-              <span className="text-secondary"> Nagercoil</span>
+              <span className="text-secondary"> Tamilnadu</span>
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-gray-200">
               Safe, Reliable & Affordable Taxi Service Available 24/7
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Button 
-                variant="outline" 
+                
                 size="lg" 
-                className="text-blue-900 border-white hover:bg-white hover:text-primary text-lg px-8 py-6"
+                className="bg-gradient-secondary hover:bg-secondary-dark hover:bg-white hover:text-primary text-lg px-8 py-6"
               >
                 <Phone className="mr-2 w-5 h-5" />
-                Call +91 98765 43210
+                Call +91 9790532574
               </Button>
             </div>
           </div>
@@ -177,7 +177,7 @@ const Homepage = () => {
             Book Your Ride Today with BDS Cabs
           </h2>
           <p className="text-xl mb-8 text-gray-200">
-            Experience the best cab service in Nagercoil with professional drivers and clean vehicles
+            Experience the best cab service in Tamilnadu with professional drivers and clean vehicles
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
