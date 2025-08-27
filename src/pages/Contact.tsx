@@ -49,13 +49,13 @@ const Contact = () => {
     {
       icon: Mail,
       title: 'Email',
-      details: 'bdscabnagercoil@gmail.com',
+      details: 'bdscabTamilnadu@gmail.com',
       action: 'Send Email'
     },
     {
       icon: MapPin,
       title: 'Location',
-      details: 'Nagercoil, Tamil Nadu',
+      details: 'Tamilnadu, Tamil Nadu',
       action: 'Get Directions'
     }
   ];
@@ -63,11 +63,11 @@ const Contact = () => {
   return (
     <div className="min-h-screen">
       <Helmet>
-        <title>Contact BDS Cabs - 24/7 Taxi Booking | Nagercoil</title>
-        <meta name="description" content="Contact BDS Cabs for immediate taxi booking in Nagercoil. 24/7 customer support, emergency service available. Call now or book online!" />
-        <meta name="keywords" content="contact bds cabs, taxi booking nagercoil, emergency taxi, 24/7 cab service, nagercoil taxi contact, cab booking phone" />
+        <title>Contact BDS Cabs - 24/7 Taxi Booking | Tamilnadu</title>
+        <meta name="description" content="Contact BDS Cabs for immediate taxi booking in Tamilnadu. 24/7 customer support, emergency service available. Call now or book online!" />
+        <meta name="keywords" content="contact bds cabs, taxi booking Tamilnadu, emergency taxi, 24/7 cab service, Tamilnadu taxi contact, cab booking phone" />
         <meta property="og:title" content="Contact BDS Cabs - 24/7 Taxi Booking" />
-        <meta property="og:description" content="Get in touch with BDS Cabs for reliable taxi service in Nagercoil. 24/7 support and emergency service available." />
+        <meta property="og:description" content="Get in touch with BDS Cabs for reliable taxi service in Tamilnadu. 24/7 support and emergency service available." />
         <link rel="canonical" href="https://bdscabs.com/contact" />
       </Helmet>
       {/* Hero Section */}
@@ -78,7 +78,7 @@ const Contact = () => {
               Contact BDS Cabs
             </h1>
             <p className="text-xl md:text-2xl text-gray-200 leading-relaxed">
-              Get in touch with us for the best cab service in Nagercoil. 
+              Get in touch with us for the best cab service in Tamilnadu. 
               We're available 24/7 to serve you better.
             </p>
           </div>
@@ -189,14 +189,14 @@ const Contact = () => {
                 <CardContent>
                   <div className="aspect-video rounded-lg overflow-hidden">
                     <iframe
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d251661.1456145!2d77.23785!3d8.1777!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b04f0c9c1a8a5f5%3A0x8c8b8c8b8c8b8c8b!2sNagercoil%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1234567890!5m2!1sen!2sin"
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d251661.1456145!2d77.23785!3d8.1777!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b04f0c9c1a8a5f5%3A0x8c8b8c8b8c8b8c8b!2sTamilnadu%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1234567890!5m2!1sen!2sin"
                       width="100%"
                       height="100%"
                       style={{ border: 0 }}
                       allowFullScreen
                       loading="lazy"
                       referrerPolicy="no-referrer-when-downgrade"
-                      title="BDS Cabs Location in Nagercoil"
+                      title="BDS Cabs Location in Tamilnadu"
                     ></iframe>
                   </div>
                 </CardContent>
@@ -242,7 +242,7 @@ const Contact = () => {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4">Need Emergency Taxi?</h2>
           <p className="text-xl mb-8 opacity-90">
-            Call us now for immediate pickup anywhere in Nagercoil
+            Call us now for immediate pickup anywhere in Tamilnadu
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 

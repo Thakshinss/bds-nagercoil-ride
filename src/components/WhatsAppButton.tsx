@@ -1,5 +1,6 @@
 import { MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { FaWhatsapp } from "react-icons/fa";
 
 const WhatsAppButton = () => {
   const handleWhatsAppClick = () => {
@@ -16,7 +17,8 @@ const WhatsAppButton = () => {
       size="icon"
       aria-label="Chat on WhatsApp"
     >
-      <MessageCircle className="h-6 w-6" />
+      <FaWhatsapp className="h-14 w-14" />
+
     </Button>
   );
 };

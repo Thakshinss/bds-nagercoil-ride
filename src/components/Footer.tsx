@@ -31,7 +31,7 @@ const Footer = () => {
               <span className="text-xl font-bold">BDS Cabs</span>
             </div>
             <p className="text-gray-300 text-sm">
-              Best cab service in Nagercoil. Safe, reliable, and affordable taxi service available 24/7. 
+              Best cab service in Tamilnadu. Safe, reliable, and affordable taxi service available 24/7. 
               Your trusted transportation partner since 2018.
             </p>
             <div className="flex space-x-4">
@@ -90,7 +90,7 @@ const Footer = () => {
               <div className="flex items-start space-x-3">
                 <MapPin className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                 <div>
-                  <p className="text-gray-300 text-sm">Nagercoil, Tamil Nadu</p>
+                  <p className="text-gray-300 text-sm">Tamil Nadu</p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
@@ -110,7 +110,7 @@ const Footer = () => {
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <div className="text-gray-400 text-sm text-center md:text-left">
-            © {new Date().getFullYear()} BDS Cabs. All rights reserved. Best cab service in Nagercoil.
+            © {new Date().getFullYear()} BDS Cabs. All rights reserved. Best cab service in Tamilnadu.
           </div>
             <div className="flex space-x-6 text-sm">
               <a href="#" className="text-gray-400 hover:text-primary transition-colors">Privacy Policy</a>

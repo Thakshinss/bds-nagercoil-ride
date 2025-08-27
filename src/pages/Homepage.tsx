@@ -21,27 +21,27 @@ const Homepage = () => {
     // },
     {
       name: 'Sedan',
-      price: '₹12/km',
+      price: 'Purley Economy Class ride',
       image: dezire,
       features: ['AC', '4 Seater', 'Comfortable']
     },
     {
       name: 'SUV',
-      price: '₹18/km',
-      image: traveller,
+      price: 'Take your join family and enjoy long blissful trips',
+      image: innova,
       features: ['AC', '7 Seater', 'Spacious']
     },
     {
-      name: 'Hatchback',
-      price: '₹10/km',
-      image: innova,
-      features: ['AC', '4 Seater', 'Economic']
+      name: 'Traveller',
+      price: 'Your Perfect Ride for Family & Group Adventures',
+      image: traveller,
+      features: ['AC', '14 Seater', 'Economic']
     }
   ];
 
   const features = [
     {
-      icon: Clock,
+      icon: Clock,  
       title: '24/7 Service',
       description: 'Round-the-clock taxi service'
     },
@@ -53,7 +53,7 @@ const Homepage = () => {
     {
       icon: Star,
       title: 'Best Rates',
-      description: 'Affordable pricing in Nagercoil'
+      description: 'Affordable pricing in Tamilnadu'
     }
   ];
 
@@ -61,8 +61,8 @@ const Homepage = () => {
     <div>
       <Helmet>
         <title>B D S Cabs & Travels - Best Cab/Taxi Service in Tamilnadu | Book Online</title>
-        <meta name="description" content="BDS Cabs offers premium taxi services in Nagercoil. Book affordable, reliable cabs online. 24/7 service, best rates, professional drivers. Call now for instant booking!" />
-        <meta name="keywords" content="bdscabs, taxi in nagercoil, cabs, bds, cab near me, best cabs, auto rickshaw near me, nagercoil taxi, online cab booking, affordable taxi, reliable cab service,best cab service in Tamilnadu,tamilnadu cab,Tamilnadu cab" />
+        <meta name="description" content="BDS Cabs offers premium taxi services in Tamilnadu. Book affordable, reliable cabs online. 24/7 service, best rates, professional drivers. Call now for instant booking!" />
+        <meta name="keywords" content="bdscabs, taxi in Tamilnadu, cabs, bds, cab near me, best cabs, auto rickshaw near me, Tamilnadu taxi, online cab booking, affordable taxi, reliable cab service,best cab service in Tamilnadu,tamilnadu cab,Tamilnadu cab" />
         <meta property="og:title" content="B D S Cabs - Best Taxi Service in Tamilnadu" />
         <meta property="og:description" content="Premium taxi services in Tamilnadu. Book online for best rates, 24/7 service, and professional drivers." />
         <meta property="og:type" content="website" />

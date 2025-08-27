@@ -130,7 +130,7 @@ const TourPackages = () => {
                 )}
 
                 <Button className="w-full">
-                  Book Now
+                  Contact us
                 </Button>
               </CardContent>
             </Card>
