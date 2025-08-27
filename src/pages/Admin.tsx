@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Table,
   TableBody,
@@ -12,17 +13,23 @@ import {
 } from '@/components/ui/table';
 import { Pencil, Trash2, Plus } from 'lucide-react';
 import { fareDataService, FareData } from '@/services/fareData';
+import { tourPackageService, TourPackage } from '@/services/tourPackageData';
 import { FareForm } from '@/components/FareForm';
+import { TourPackageForm } from '@/components/TourPackageForm';
 import { useToast } from '@/hooks/use-toast';
 
 const Admin = () => {
   const [fares, setFares] = useState<FareData[]>([]);
+  const [packages, setPackages] = useState<TourPackage[]>([]);
   const [editingFare, setEditingFare] = useState<FareData | null>(null);
-  const [showForm, setShowForm] = useState(false);
+  const [editingPackage, setEditingPackage] = useState<TourPackage | null>(null);
+  const [showFareForm, setShowFareForm] = useState(false);
+  const [showPackageForm, setShowPackageForm] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
     loadFares();
+    loadPackages();
   }, []);
 
   const loadFares = () => {
@@ -30,10 +37,15 @@ const Admin = () => {
     setFares(fareData);
   };
 
+  const loadPackages = () => {
+    const packageData = tourPackageService.getAllPackages();
+    setPackages(packageData);
+  };
+
   const handleAddFare = (fareData: Omit<FareData, 'id'>) => {
     fareDataService.addFare(fareData);
     loadFares();
-    setShowForm(false);
+    setShowFareForm(false);
     toast({
       title: "Success",
       description: "Fare added successfully",
@@ -45,7 +57,7 @@ const Admin = () => {
       fareDataService.updateFare(editingFare.id, fareData);
       loadFares();
       setEditingFare(null);
-      setShowForm(false);
+      setShowFareForm(false);
       toast({
         title: "Success",
         description: "Fare updated successfully",
@@ -66,17 +78,67 @@ const Admin = () => {
 
   const handleEditFare = (fare: FareData) => {
     setEditingFare(fare);
-    setShowForm(true);
+    setShowFareForm(true);
   };
 
-  const handleCancelForm = () => {
+  const handleCancelFareForm = () => {
     setEditingFare(null);
-    setShowForm(false);
+    setShowFareForm(false);
   };
 
   const handleNewFare = () => {
     setEditingFare(null);
-    setShowForm(true);
+    setShowFareForm(true);
+  };
+
+  // Tour Package handlers
+  const handleAddPackage = (packageData: Omit<TourPackage, 'id'>) => {
+    tourPackageService.addPackage(packageData);
+    loadPackages();
+    setShowPackageForm(false);
+    toast({
+      title: "Success",
+      description: "Tour package added successfully",
+    });
+  };
+
+  const handleUpdatePackage = (packageData: Omit<TourPackage, 'id'>) => {
+    if (editingPackage) {
+      tourPackageService.updatePackage(editingPackage.id, packageData);
+      loadPackages();
+      setEditingPackage(null);
+      setShowPackageForm(false);
+      toast({
+        title: "Success",
+        description: "Tour package updated successfully",
+      });
+    }
+  };
+
+  const handleDeletePackage = (id: string) => {
+    if (confirm('Are you sure you want to delete this tour package?')) {
+      tourPackageService.deletePackage(id);
+      loadPackages();
+      toast({
+        title: "Success",
+        description: "Tour package deleted successfully",
+      });
+    }
+  };
+
+  const handleEditPackage = (pkg: TourPackage) => {
+    setEditingPackage(pkg);
+    setShowPackageForm(true);
+  };
+
+  const handleCancelPackageForm = () => {
+    setEditingPackage(null);
+    setShowPackageForm(false);
+  };
+
+  const handleNewPackage = () => {
+    setEditingPackage(null);
+    setShowPackageForm(true);
   };
 
   return (
@@ -91,89 +153,175 @@ const Admin = () => {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Fare Management <span className="text-primary">Admin</span>
+            Content Management <span className="text-primary">Admin</span>
           </h1>
           <p className="text-lg text-muted-foreground">
-            Manage taxi fares and pricing for BDS Cabs
+            Manage taxi fares and tour packages for BDS Cabs
           </p>
         </div>
 
-        {/* Add New Fare Button */}
-        {!showForm && (
-          <div className="mb-6">
-            <Button onClick={handleNewFare} className="flex items-center gap-2">
-              <Plus className="h-4 w-4" />
-              Add New Fare
-            </Button>
-          </div>
-        )}
+        <Tabs defaultValue="fares" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="fares">Fare Management</TabsTrigger>
+            <TabsTrigger value="packages">Tour Packages</TabsTrigger>
+          </TabsList>
 
-        {/* Form */}
-        {showForm && (
-          <div className="mb-8">
-            <FareForm
-              fare={editingFare || undefined}
-              onSubmit={editingFare ? handleUpdateFare : handleAddFare}
-              onCancel={handleCancelForm}
-            />
-          </div>
-        )}
+          {/* Fares Tab */}
+          <TabsContent value="fares" className="space-y-6">
+            {/* Add New Fare Button */}
+            {!showFareForm && (
+              <div className="mb-6">
+                <Button onClick={handleNewFare} className="flex items-center gap-2">
+                  <Plus className="h-4 w-4" />
+                  Add New Fare
+                </Button>
+              </div>
+            )}
 
-        {/* Fares Table */}
-        <Card className="shadow-custom-lg">
-          <CardHeader>
-            <CardTitle className="text-2xl">All Fares ({fares.length})</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="font-semibold">From</TableHead>
-                    <TableHead className="font-semibold">To</TableHead>
-                    <TableHead className="font-semibold">Vehicle Type</TableHead>
-                    <TableHead className="font-semibold">Price</TableHead>
-                    <TableHead className="font-semibold text-center">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {fares.map((fare) => (
-                    <TableRow key={fare.id} className="hover:bg-muted/50">
-                      <TableCell className="font-medium">{fare.from}</TableCell>
-                      <TableCell>{fare.to}</TableCell>
-                      <TableCell>
-                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
-                          {fare.vehicleType}
-                        </span>
-                      </TableCell>
-                      <TableCell className="font-semibold text-primary">
-                        {fare.price}
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center justify-center gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleEditFare(fare)}
-                          >
-                            <Pencil className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            onClick={() => handleDeleteFare(fare.id)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
+            {/* Fare Form */}
+            {showFareForm && (
+              <div className="mb-8">
+                <FareForm
+                  fare={editingFare || undefined}
+                  onSubmit={editingFare ? handleUpdateFare : handleAddFare}
+                  onCancel={handleCancelFareForm}
+                />
+              </div>
+            )}
+
+            {/* Fares Table */}
+            <Card className="shadow-custom-lg">
+              <CardHeader>
+                <CardTitle className="text-2xl">All Fares ({fares.length})</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="font-semibold">From</TableHead>
+                        <TableHead className="font-semibold">To</TableHead>
+                        <TableHead className="font-semibold">Vehicle Type</TableHead>
+                        <TableHead className="font-semibold">Price</TableHead>
+                        <TableHead className="font-semibold text-center">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {fares.map((fare) => (
+                        <TableRow key={fare.id} className="hover:bg-muted/50">
+                          <TableCell className="font-medium">{fare.from}</TableCell>
+                          <TableCell>{fare.to}</TableCell>
+                          <TableCell>
+                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                              {fare.vehicleType}
+                            </span>
+                          </TableCell>
+                          <TableCell className="font-semibold text-primary">
+                            {fare.price}
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center justify-center gap-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleEditFare(fare)}
+                              >
+                                <Pencil className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={() => handleDeleteFare(fare.id)}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Tour Packages Tab */}
+          <TabsContent value="packages" className="space-y-6">
+            {/* Add New Package Button */}
+            {!showPackageForm && (
+              <div className="mb-6">
+                <Button onClick={handleNewPackage} className="flex items-center gap-2">
+                  <Plus className="h-4 w-4" />
+                  Add New Tour Package
+                </Button>
+              </div>
+            )}
+
+            {/* Package Form */}
+            {showPackageForm && (
+              <div className="mb-8">
+                <TourPackageForm
+                  package={editingPackage || undefined}
+                  onSubmit={editingPackage ? handleUpdatePackage : handleAddPackage}
+                  onCancel={handleCancelPackageForm}
+                />
+              </div>
+            )}
+
+            {/* Packages Table */}
+            <Card className="shadow-custom-lg">
+              <CardHeader>
+                <CardTitle className="text-2xl">All Tour Packages ({packages.length})</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="font-semibold">Title</TableHead>
+                        <TableHead className="font-semibold">Duration</TableHead>
+                        <TableHead className="font-semibold">Destinations</TableHead>
+                        <TableHead className="font-semibold">Price</TableHead>
+                        <TableHead className="font-semibold text-center">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {packages.map((pkg) => (
+                        <TableRow key={pkg.id} className="hover:bg-muted/50">
+                          <TableCell className="font-medium">{pkg.title}</TableCell>
+                          <TableCell>{pkg.duration}</TableCell>
+                          <TableCell className="max-w-xs truncate">{pkg.destinations}</TableCell>
+                          <TableCell className="font-semibold text-primary">
+                            {pkg.price}
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center justify-center gap-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleEditPackage(pkg)}
+                              >
+                                <Pencil className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={() => handleDeletePackage(pkg.id)}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
