@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Table,
@@ -8,25 +9,15 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Helmet } from 'react-helmet-async';
+import { fareDataService, FareData } from '@/services/fareData';
 
 const Prices = () => {
-  const priceData = [
-    { from: 'Nagercoil', to: 'Trivandrum Airport', vehicleType: 'Sedan', price: '₹1,200' },
-    { from: 'Nagercoil', to: 'Trivandrum Airport', vehicleType: 'SUV', price: '₹1,500' },
-    { from: 'Nagercoil', to: 'Trivandrum Airport', vehicleType: 'Hatchback', price: '₹1,000' },
-    { from: 'Nagercoil', to: 'Kanyakumari', vehicleType: 'Sedan', price: '₹800' },
-    { from: 'Nagercoil', to: 'Kanyakumari', vehicleType: 'SUV', price: '₹1,000' },
-    { from: 'Nagercoil', to: 'Kanyakumari', vehicleType: 'Hatchback', price: '₹600' },
-    { from: 'Nagercoil', to: 'Tirunelveli', vehicleType: 'Sedan', price: '₹1,500' },
-    { from: 'Nagercoil', to: 'Tirunelveli', vehicleType: 'SUV', price: '₹1,800' },
-    { from: 'Nagercoil', to: 'Tirunelveli', vehicleType: 'Hatchback', price: '₹1,200' },
-    { from: 'Nagercoil', to: 'Madurai', vehicleType: 'Sedan', price: '₹3,500' },
-    { from: 'Nagercoil', to: 'Madurai', vehicleType: 'SUV', price: '₹4,000' },
-    { from: 'Nagercoil', to: 'Madurai', vehicleType: 'Hatchback', price: '₹3,000' },
-    { from: 'Nagercoil', to: 'Chennai', vehicleType: 'Sedan', price: '₹8,000' },
-    { from: 'Nagercoil', to: 'Chennai', vehicleType: 'SUV', price: '₹9,500' },
-    { from: 'Nagercoil', to: 'Chennai', vehicleType: 'Hatchback', price: '₹7,000' },
-  ];
+  const [priceData, setPriceData] = useState<FareData[]>([]);
+
+  useEffect(() => {
+    const fares = fareDataService.getAllFares();
+    setPriceData(fares);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background py-12">
@@ -69,8 +60,8 @@ const Prices = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {priceData.map((item, index) => (
-                    <TableRow key={index} className="hover:bg-muted/50">
+                  {priceData.map((item) => (
+                    <TableRow key={item.id} className="hover:bg-muted/50">
                       <TableCell className="font-medium">{item.from}</TableCell>
                       <TableCell>{item.to}</TableCell>
                       <TableCell>
