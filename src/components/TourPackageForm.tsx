@@ -17,8 +17,6 @@ export const TourPackageForm = ({ package: pkg, onSubmit, onCancel }: TourPackag
   const [formData, setFormData] = useState({
     title: pkg?.title || '',
     description: pkg?.description || '',
-    duration: pkg?.duration || '',
-    destinations: pkg?.destinations || '',
     price: pkg?.price || '',
     image: pkg?.image || '',
     highlights: pkg?.highlights || [''],
@@ -30,8 +28,6 @@ export const TourPackageForm = ({ package: pkg, onSubmit, onCancel }: TourPackag
       setFormData({
         title: pkg.title,
         description: pkg.description,
-        duration: pkg.duration,
-        destinations: pkg.destinations,
         price: pkg.price,
         image: pkg.image,
         highlights: pkg.highlights.length ? pkg.highlights : [''],
@@ -45,7 +41,7 @@ export const TourPackageForm = ({ package: pkg, onSubmit, onCancel }: TourPackag
     const filteredHighlights = formData.highlights.filter(h => h.trim() !== '');
     const filteredInclusions = formData.inclusions.filter(i => i.trim() !== '');
     
-    if (formData.title && formData.description && formData.duration && formData.price) {
+    if (formData.title && formData.description && formData.price) {
       onSubmit({
         ...formData,
         highlights: filteredHighlights,
@@ -55,8 +51,6 @@ export const TourPackageForm = ({ package: pkg, onSubmit, onCancel }: TourPackag
         setFormData({
           title: '',
           description: '',
-          duration: '',
-          destinations: '',
           price: '',
           image: '',
           highlights: [''],
@@ -98,27 +92,15 @@ export const TourPackageForm = ({ package: pkg, onSubmit, onCancel }: TourPackag
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="title">Package Title</Label>
-              <Input
-                id="title"
-                value={formData.title}
-                onChange={(e) => handleInputChange('title', e.target.value)}
-                placeholder="Tour package title"
-                required
-              />
-            </div>
-            <div>
-              <Label htmlFor="duration">Duration</Label>
-              <Input
-                id="duration"
-                value={formData.duration}
-                onChange={(e) => handleInputChange('duration', e.target.value)}
-                placeholder="e.g., 2 Days / 1 Night"
-                required
-              />
-            </div>
+          <div>
+            <Label htmlFor="title">Package Title</Label>
+            <Input
+              id="title"
+              value={formData.title}
+              onChange={(e) => handleInputChange('title', e.target.value)}
+              placeholder="Tour package title"
+              required
+            />
           </div>
 
           <div>
@@ -133,27 +115,15 @@ export const TourPackageForm = ({ package: pkg, onSubmit, onCancel }: TourPackag
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="destinations">Destinations</Label>
-              <Input
-                id="destinations"
-                value={formData.destinations}
-                onChange={(e) => handleInputChange('destinations', e.target.value)}
-                placeholder="Main destinations covered"
-                required
-              />
-            </div>
-            <div>
-              <Label htmlFor="price">Price</Label>
-              <Input
-                id="price"
-                value={formData.price}
-                onChange={(e) => handleInputChange('price', e.target.value)}
-                placeholder="₹4,500"
-                required
-              />
-            </div>
+          <div>
+            <Label htmlFor="price">Price</Label>
+            <Input
+              id="price"
+              value={formData.price}
+              onChange={(e) => handleInputChange('price', e.target.value)}
+              placeholder="₹4,500"
+              required
+            />
           </div>
 
           <div>

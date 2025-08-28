@@ -15,8 +15,11 @@ const Prices = () => {
   const [priceData, setPriceData] = useState<FareData[]>([]);
 
   useEffect(() => {
-    const fares = fareDataService.getAllFares();
-    setPriceData(fares);
+    const loadFares = async () => {
+      const fares = await fareDataService.getAllFares();
+      setPriceData(fares);
+    };
+    loadFares();
   }, []);
 
   return (

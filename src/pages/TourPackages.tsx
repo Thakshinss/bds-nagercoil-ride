@@ -10,8 +10,11 @@ const TourPackages = () => {
   const [packages, setPackages] = useState<TourPackage[]>([]);
 
   useEffect(() => {
-    const packageData = tourPackageService.getAllPackages();
-    setPackages(packageData);
+    const loadPackages = async () => {
+      const packageData = await tourPackageService.getAllPackages();
+      setPackages(packageData);
+    };
+    loadPackages();
   }, []);
 
   return (
@@ -60,29 +63,15 @@ const TourPackages = () => {
                   </Badge>
                 </div>
                 
-                <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-1">
-                    <Clock className="h-4 w-4" />
-                    <span>{pkg.duration}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <MapPin className="h-4 w-4" />
-                    <span className="truncate">{pkg.destinations.split(',')[0]}...</span>
-                  </div>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <MapPin className="h-4 w-4" />
+                  <span>Tour Package</span>
                 </div>
               </CardHeader>
 
               <CardContent className="space-y-4">
                 <p className="text-muted-foreground">{pkg.description}</p>
 
-                {/* Destinations */}
-                <div>
-                  <h4 className="font-semibold mb-2 flex items-center gap-2">
-                    <MapPin className="h-4 w-4 text-primary" />
-                    Destinations
-                  </h4>
-                  <p className="text-sm text-muted-foreground">{pkg.destinations}</p>
-                </div>
 
                 {/* Highlights */}
                 {pkg.highlights.length > 0 && (

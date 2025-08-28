@@ -1,109 +1,123 @@
+import { supabase } from "@/integrations/supabase/client";
+
 export interface TourPackage {
   id: string;
   title: string;
   description: string;
-  duration: string;
-  destinations: string;
   price: string;
   image: string;
   highlights: string[];
   inclusions: string[];
 }
 
-const STORAGE_KEY = 'bds-tour-packages';
-
-const defaultTourPackages: TourPackage[] = [
-  {
-    id: '1',
-    title: 'Kanyakumari Spiritual Tour',
-    description: 'Experience the spiritual essence of Kanyakumari with visits to famous temples and sunset points.',
-    duration: '2 Days / 1 Night',
-    destinations: 'Kanyakumari, Vivekananda Rock, Thiruvalluvar Statue',
-    price: '₹4,500',
-    image: '/api/placeholder/400/300',
-    highlights: ['Sunrise & Sunset View', 'Vivekananda Rock Memorial', 'Thiruvalluvar Statue', 'Kanyakumari Temple'],
-    inclusions: ['Transportation', 'Accommodation', 'Breakfast', 'Guide Service']
-  },
-  {
-    id: '2',
-    title: 'Nagercoil Heritage Tour',
-    description: 'Explore the rich cultural heritage and historical landmarks of Nagercoil.',
-    duration: '1 Day',
-    destinations: 'Nagercoil, Nagaraja Temple, Padmanabhapuram Palace',
-    price: '₹2,800',
-    image: '/api/placeholder/400/300',
-    highlights: ['Nagaraja Temple', 'Padmanabhapuram Palace', 'Local Markets', 'Traditional Cuisine'],
-    inclusions: ['Transportation', 'Lunch', 'Entry Fees', 'Guide Service']
-  },
-  {
-    id: '3',
-    title: 'Western Ghats Adventure',
-    description: 'Adventure tour through the scenic Western Ghats with trekking and nature exploration.',
-    duration: '3 Days / 2 Nights',
-    destinations: 'Agasthyarkoodam, Peppara Wildlife Sanctuary, Ponmudi',
-    price: '₹8,500',
-    image: '/api/placeholder/400/300',
-    highlights: ['Trekking', 'Wildlife Safari', 'Mountain Views', 'Tea Plantations'],
-    inclusions: ['Transportation', 'Accommodation', 'All Meals', 'Trekking Guide', 'Equipment']
-  },
-  {
-    id: '4',
-    title: 'Trivandrum City Tour',
-    description: 'Comprehensive city tour covering major attractions and cultural sites in Trivandrum.',
-    duration: '1 Day',
-    destinations: 'Padmanabhaswamy Temple, Napier Museum, Kovalam Beach',
-    price: '₹3,200',
-    image: '/api/placeholder/400/300',
-    highlights: ['Padmanabhaswamy Temple', 'Napier Museum', 'Kovalam Beach', 'Shopping'],
-    inclusions: ['Transportation', 'Lunch', 'Entry Fees', 'Guide Service']
-  }
-];
-
 export const tourPackageService = {
-  getAllPackages(): TourPackage[] {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      return JSON.parse(stored);
+  async getAllPackages(): Promise<TourPackage[]> {
+    const { data, error } = await supabase
+      .from('tour_packages')
+      .select('*')
+      .order('created_at', { ascending: true });
+    
+    if (error) {
+      console.error('Error fetching tour packages:', error);
+      return [];
     }
-    // Initialize with default data if none exists
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultTourPackages));
-    return defaultTourPackages;
+    
+    return data.map(pkg => ({
+      id: pkg.id,
+      title: pkg.title,
+      description: pkg.description,
+      price: pkg.price,
+      image: pkg.image || '/placeholder.svg',
+      highlights: pkg.highlights || [],
+      inclusions: pkg.inclusions || []
+    }));
   },
 
-  addPackage(pkg: Omit<TourPackage, 'id'>): TourPackage {
-    const packages = this.getAllPackages();
-    const newPackage: TourPackage = {
-      ...pkg,
-      id: Date.now().toString(),
+  async addPackage(pkg: Omit<TourPackage, 'id'>): Promise<TourPackage | null> {
+    const { data, error } = await supabase
+      .from('tour_packages')
+      .insert([{
+        title: pkg.title,
+        description: pkg.description,
+        price: pkg.price,
+        image: pkg.image,
+        highlights: pkg.highlights,
+        inclusions: pkg.inclusions
+      }])
+      .select()
+      .single();
+    
+    if (error) {
+      console.error('Error adding tour package:', error);
+      return null;
+    }
+    
+    return {
+      id: data.id,
+      title: data.title,
+      description: data.description,
+      price: data.price,
+      image: data.image || '/placeholder.svg',
+      highlights: data.highlights || [],
+      inclusions: data.inclusions || []
     };
-    packages.push(newPackage);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(packages));
-    return newPackage;
   },
 
-  updatePackage(id: string, updatedPackage: Omit<TourPackage, 'id'>): boolean {
-    const packages = this.getAllPackages();
-    const index = packages.findIndex(pkg => pkg.id === id);
-    if (index !== -1) {
-      packages[index] = { ...updatedPackage, id };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(packages));
-      return true;
+  async updatePackage(id: string, updatedPackage: Omit<TourPackage, 'id'>): Promise<boolean> {
+    const { error } = await supabase
+      .from('tour_packages')
+      .update({
+        title: updatedPackage.title,
+        description: updatedPackage.description,
+        price: updatedPackage.price,
+        image: updatedPackage.image,
+        highlights: updatedPackage.highlights,
+        inclusions: updatedPackage.inclusions
+      })
+      .eq('id', id);
+    
+    if (error) {
+      console.error('Error updating tour package:', error);
+      return false;
     }
-    return false;
+    
+    return true;
   },
 
-  deletePackage(id: string): boolean {
-    const packages = this.getAllPackages();
-    const filteredPackages = packages.filter(pkg => pkg.id !== id);
-    if (filteredPackages.length !== packages.length) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(filteredPackages));
-      return true;
+  async deletePackage(id: string): Promise<boolean> {
+    const { error } = await supabase
+      .from('tour_packages')
+      .delete()
+      .eq('id', id);
+    
+    if (error) {
+      console.error('Error deleting tour package:', error);
+      return false;
     }
-    return false;
+    
+    return true;
   },
 
-  getPackageById(id: string): TourPackage | undefined {
-    const packages = this.getAllPackages();
-    return packages.find(pkg => pkg.id === id);
+  async getPackageById(id: string): Promise<TourPackage | null> {
+    const { data, error } = await supabase
+      .from('tour_packages')
+      .select('*')
+      .eq('id', id)
+      .single();
+    
+    if (error) {
+      console.error('Error fetching tour package by id:', error);
+      return null;
+    }
+    
+    return {
+      id: data.id,
+      title: data.title,
+      description: data.description,
+      price: data.price,
+      image: data.image || '/placeholder.svg',
+      highlights: data.highlights || [],
+      inclusions: data.inclusions || []
+    };
   }
 };

@@ -32,47 +32,71 @@ const Admin = () => {
     loadPackages();
   }, []);
 
-  const loadFares = () => {
-    const fareData = fareDataService.getAllFares();
+  const loadFares = async () => {
+    const fareData = await fareDataService.getAllFares();
     setFares(fareData);
   };
 
-  const loadPackages = () => {
-    const packageData = tourPackageService.getAllPackages();
+  const loadPackages = async () => {
+    const packageData = await tourPackageService.getAllPackages();
     setPackages(packageData);
   };
 
-  const handleAddFare = (fareData: Omit<FareData, 'id'>) => {
-    fareDataService.addFare(fareData);
-    loadFares();
-    setShowFareForm(false);
-    toast({
-      title: "Success",
-      description: "Fare added successfully",
-    });
-  };
-
-  const handleUpdateFare = (fareData: Omit<FareData, 'id'>) => {
-    if (editingFare) {
-      fareDataService.updateFare(editingFare.id, fareData);
+  const handleAddFare = async (fareData: Omit<FareData, 'id'>) => {
+    const result = await fareDataService.addFare(fareData);
+    if (result) {
       loadFares();
-      setEditingFare(null);
       setShowFareForm(false);
       toast({
         title: "Success",
-        description: "Fare updated successfully",
+        description: "Fare added successfully",
+      });
+    } else {
+      toast({
+        title: "Error",
+        description: "Failed to add fare",
+        variant: "destructive",
       });
     }
   };
 
-  const handleDeleteFare = (id: string) => {
+  const handleUpdateFare = async (fareData: Omit<FareData, 'id'>) => {
+    if (editingFare) {
+      const success = await fareDataService.updateFare(editingFare.id, fareData);
+      if (success) {
+        loadFares();
+        setEditingFare(null);
+        setShowFareForm(false);
+        toast({
+          title: "Success",
+          description: "Fare updated successfully",
+        });
+      } else {
+        toast({
+          title: "Error", 
+          description: "Failed to update fare",
+          variant: "destructive",
+        });
+      }
+    }
+  };
+
+  const handleDeleteFare = async (id: string) => {
     if (confirm('Are you sure you want to delete this fare?')) {
-      fareDataService.deleteFare(id);
-      loadFares();
-      toast({
-        title: "Success",
-        description: "Fare deleted successfully",
-      });
+      const success = await fareDataService.deleteFare(id);
+      if (success) {
+        loadFares();
+        toast({
+          title: "Success",
+          description: "Fare deleted successfully",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to delete fare",
+          variant: "destructive",
+        });
+      }
     }
   };
 
@@ -92,37 +116,61 @@ const Admin = () => {
   };
 
   // Tour Package handlers
-  const handleAddPackage = (packageData: Omit<TourPackage, 'id'>) => {
-    tourPackageService.addPackage(packageData);
-    loadPackages();
-    setShowPackageForm(false);
-    toast({
-      title: "Success",
-      description: "Tour package added successfully",
-    });
-  };
-
-  const handleUpdatePackage = (packageData: Omit<TourPackage, 'id'>) => {
-    if (editingPackage) {
-      tourPackageService.updatePackage(editingPackage.id, packageData);
+  const handleAddPackage = async (packageData: Omit<TourPackage, 'id'>) => {
+    const result = await tourPackageService.addPackage(packageData);
+    if (result) {
       loadPackages();
-      setEditingPackage(null);
       setShowPackageForm(false);
       toast({
         title: "Success",
-        description: "Tour package updated successfully",
+        description: "Tour package added successfully",
+      });
+    } else {
+      toast({
+        title: "Error",
+        description: "Failed to add tour package",
+        variant: "destructive",
       });
     }
   };
 
-  const handleDeletePackage = (id: string) => {
+  const handleUpdatePackage = async (packageData: Omit<TourPackage, 'id'>) => {
+    if (editingPackage) {
+      const success = await tourPackageService.updatePackage(editingPackage.id, packageData);
+      if (success) {
+        loadPackages();
+        setEditingPackage(null);
+        setShowPackageForm(false);
+        toast({
+          title: "Success",
+          description: "Tour package updated successfully",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to update tour package",
+          variant: "destructive",
+        });
+      }
+    }
+  };
+
+  const handleDeletePackage = async (id: string) => {
     if (confirm('Are you sure you want to delete this tour package?')) {
-      tourPackageService.deletePackage(id);
-      loadPackages();
-      toast({
-        title: "Success",
-        description: "Tour package deleted successfully",
-      });
+      const success = await tourPackageService.deletePackage(id);
+      if (success) {
+        loadPackages();
+        toast({
+          title: "Success",
+          description: "Tour package deleted successfully",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to delete tour package",
+          variant: "destructive",
+        });
+      }
     }
   };
 
@@ -280,8 +328,7 @@ const Admin = () => {
                     <TableHeader>
                       <TableRow>
                         <TableHead className="font-semibold">Title</TableHead>
-                        <TableHead className="font-semibold">Duration</TableHead>
-                        <TableHead className="font-semibold">Destinations</TableHead>
+                        <TableHead className="font-semibold">Description</TableHead>
                         <TableHead className="font-semibold">Price</TableHead>
                         <TableHead className="font-semibold text-center">Actions</TableHead>
                       </TableRow>
@@ -290,8 +337,7 @@ const Admin = () => {
                       {packages.map((pkg) => (
                         <TableRow key={pkg.id} className="hover:bg-muted/50">
                           <TableCell className="font-medium">{pkg.title}</TableCell>
-                          <TableCell>{pkg.duration}</TableCell>
-                          <TableCell className="max-w-xs truncate">{pkg.destinations}</TableCell>
+                          <TableCell className="max-w-xs truncate">{pkg.description}</TableCell>
                           <TableCell className="font-semibold text-primary">
                             {pkg.price}
                           </TableCell>
