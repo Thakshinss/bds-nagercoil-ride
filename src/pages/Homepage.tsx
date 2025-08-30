@@ -57,6 +57,11 @@ const Homepage = () => {
     }
   ];
 
+  const handleCall = () => {
+    const phoneNumber = "+919790532574"; // Include + for tel:
+    window.location.href = `tel:${phoneNumber}`;
+  };
+
   return (
     <div>
       <Helmet>
@@ -87,8 +92,7 @@ const Homepage = () => {
               Safe, Reliable & Affordable Taxi Service Available 24/7
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <Button 
-                
+              <Button onClick={handleCall}
                 size="lg" 
                 className="bg-gradient-secondary hover:bg-secondary-dark hover:bg-white hover:text-primary text-lg px-8 py-6"
               >
@@ -180,11 +184,11 @@ const Homepage = () => {
             Experience the best cab service in Tamilnadu with professional drivers and clean vehicles
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
+            <Button onClick={handleCall}
               size="lg" 
               className="bg-secondary hover:bg-secondary-dark text-lg px-8 py-6 hover-glow"
             >
-              Book Online
+              Book Now
             </Button>
             {/* <Button 
               variant="outline" 

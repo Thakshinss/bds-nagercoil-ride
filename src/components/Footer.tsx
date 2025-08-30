@@ -15,7 +15,11 @@ const Footer = () => {
     'Outstation Travel',
     'Corporate Booking',
     '24/7 Service',
-    'Emergency Rides'
+    'Emergency Rides',
+    "Outstation Cabs Airport Taxi's",
+    "Local Sightseeing & Tours",
+    "Shuttle Taxi service",
+    "One way Drop Taxi",
   ];
 
   return (

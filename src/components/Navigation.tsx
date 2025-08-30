@@ -4,6 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Menu, X, Phone } from 'lucide-react';
 import cabimg from "../assets/bds_logo.png"
 
+
+const handleCall = () => {
+  const phoneNumber = "+919790532574"; // Include + for tel:
+  window.location.href = `tel:${phoneNumber}`;
+};
+
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -51,7 +57,7 @@ const Navigation = () => {
             ))}
             
             {/* Call Button */}
-            <Button variant="default" size="sm" className="bg-gradient-secondary hover:bg-secondary-dark">
+            <Button onClick={handleCall} variant="default" size="sm" className="bg-gradient-secondary hover:bg-secondary-dark">
               <Phone className="w-4 h-4 mr-2" />
               Call Now
             </Button>
@@ -86,7 +92,7 @@ const Navigation = () => {
                   {item.name}
                 </NavLink>
               ))}
-              <Button variant="default" size="sm" className="bg-gradient-secondary hover:bg-secondary-dark w-fit mt-2">
+              <Button onClick={handleCall} variant="default" size="sm" className="bg-gradient-secondary hover:bg-secondary-dark w-fit mt-2">
                 <Phone className="w-4 h-4 mr-2" />
                 Call Now
               </Button>
