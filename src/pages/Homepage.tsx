@@ -6,6 +6,7 @@ import BookingForm from '@/components/BookingForm';
 import { Helmet } from 'react-helmet-async';
 import van from "../assets/van.jpeg"
 import cabimg from "../assets/bds_logo.png"
+import ScrollingBanner from "../components/ScrollingBanner"
 
 import dezire from  "../assets/dezire.jpeg"
 import traveller from "../assets/tempo.jpeg"
@@ -120,6 +121,15 @@ const Homepage = () => {
                 <p className="text-muted-foreground">{feature.description}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Scrolling Banner */}
+      <section className="py-8 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="bg-gradient-secondary rounded-lg p-4 shadow-md">
+            <ScrollingBanner />
           </div>
         </div>
       </section>

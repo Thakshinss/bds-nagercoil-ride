@@ -22,7 +22,7 @@ const ScrollingBanner = () => {
   }, []);
 
   return (
-    <div className="bg-gradient-secondary text-secondary-foreground py-2 overflow-hidden">
+    <div className="text-secondary-foreground py-2 overflow-hidden">
       <div className="scroll-banner flex items-center space-x-12">
         {[...bannerContent, ...bannerContent].map((content, index) => (
           <span key={index} className="text-sm font-medium whitespace-nowrap">
