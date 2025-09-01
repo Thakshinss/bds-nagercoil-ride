@@ -14,22 +14,28 @@ import {
 import { Pencil, Trash2, Plus } from 'lucide-react';
 import { fareDataService, FareData } from '@/services/fareData';
 import { tourPackageService, TourPackage } from '@/services/tourPackageData';
+import { bannerContentService, BannerContent } from '@/services/bannerContentData';
 import { FareForm } from '@/components/FareForm';
 import { TourPackageForm } from '@/components/TourPackageForm';
+import BannerContentForm from '@/components/BannerContentForm';
 import { useToast } from '@/hooks/use-toast';
 
 const Admin = () => {
   const [fares, setFares] = useState<FareData[]>([]);
   const [packages, setPackages] = useState<TourPackage[]>([]);
+  const [bannerContent, setBannerContent] = useState<BannerContent[]>([]);
   const [editingFare, setEditingFare] = useState<FareData | null>(null);
   const [editingPackage, setEditingPackage] = useState<TourPackage | null>(null);
+  const [editingBannerContent, setEditingBannerContent] = useState<BannerContent | null>(null);
   const [showFareForm, setShowFareForm] = useState(false);
   const [showPackageForm, setShowPackageForm] = useState(false);
+  const [isAddingBannerContent, setIsAddingBannerContent] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
     loadFares();
     loadPackages();
+    loadBannerContent();
   }, []);
 
   const loadFares = async () => {
@@ -40,6 +46,19 @@ const Admin = () => {
   const loadPackages = async () => {
     const packageData = await tourPackageService.getAllPackages();
     setPackages(packageData);
+  };
+
+  const loadBannerContent = async () => {
+    try {
+      const bannerData = await bannerContentService.getAll();
+      setBannerContent(bannerData);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to load banner content",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleAddFare = async (fareData: Omit<FareData, 'id'>) => {
@@ -189,11 +208,65 @@ const Admin = () => {
     setShowPackageForm(true);
   };
 
+  // Banner Content handlers
+  const handleBannerContentAdd = async (newBannerContent: Omit<BannerContent, 'id' | 'created_at' | 'updated_at'>) => {
+    try {
+      const created = await bannerContentService.create(newBannerContent);
+      setBannerContent(prev => [...prev, created]);
+      setIsAddingBannerContent(false);
+      toast({
+        title: "Success",
+        description: "Banner content added successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to add banner content",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleBannerContentUpdate = async (id: string, updatedBannerContent: Omit<BannerContent, 'id' | 'created_at' | 'updated_at'>) => {
+    try {
+      const updated = await bannerContentService.update(id, updatedBannerContent);
+      setBannerContent(prev => prev.map(content => content.id === id ? updated : content));
+      setEditingBannerContent(null);
+      toast({
+        title: "Success",
+        description: "Banner content updated successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update banner content",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleBannerContentDelete = async (id: string) => {
+    try {
+      await bannerContentService.delete(id);
+      setBannerContent(prev => prev.filter(content => content.id !== id));
+      toast({
+        title: "Success",
+        description: "Banner content deleted successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete banner content",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background py-12">
       <Helmet>
-        <title>Admin - Fare Management | BDS Cabs</title>
-        <meta name="description" content="Admin panel for managing taxi fares and pricing" />
+        <title>Admin - Content Management | BDS Cabs</title>
+        <meta name="description" content="Admin panel for managing taxi fares, tour packages and banner content" />
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       
@@ -204,14 +277,15 @@ const Admin = () => {
             Content Management <span className="text-primary">Admin</span>
           </h1>
           <p className="text-lg text-muted-foreground">
-            Manage taxi fares and tour packages for BDS Cabs
+            Manage taxi fares, tour packages and banner content for BDS Cabs
           </p>
         </div>
 
         <Tabs defaultValue="fares" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="fares">Fare Management</TabsTrigger>
             <TabsTrigger value="packages">Tour Packages</TabsTrigger>
+            <TabsTrigger value="banner">Banner Content</TabsTrigger>
           </TabsList>
 
           {/* Fares Tab */}
@@ -366,6 +440,81 @@ const Admin = () => {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Banner Content Tab */}
+          <TabsContent value="banner" className="space-y-6">
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <h3 className="text-lg font-semibold">Banner Content</h3>
+                <Button onClick={() => setIsAddingBannerContent(true)}>
+                  Add Banner Content
+                </Button>
+              </div>
+
+              {isAddingBannerContent && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Add Banner Content</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <BannerContentForm
+                      onSubmit={handleBannerContentAdd}
+                      onCancel={() => setIsAddingBannerContent(false)}
+                    />
+                  </CardContent>
+                </Card>
+              )}
+
+              {editingBannerContent && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Edit Banner Content</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <BannerContentForm
+                      bannerContent={editingBannerContent}
+                      onSubmit={(updatedBannerContent) => handleBannerContentUpdate(editingBannerContent.id, updatedBannerContent)}
+                      onCancel={() => setEditingBannerContent(null)}
+                    />
+                  </CardContent>
+                </Card>
+              )}
+
+              <div className="grid gap-4">
+                {bannerContent.map((content) => (
+                  <Card key={content.id}>
+                    <CardContent className="p-4">
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <p className="font-medium">{content.text}</p>
+                          <div className="text-sm text-muted-foreground mt-1">
+                            Order: {content.display_order} | 
+                            Status: {content.is_active ? 'Active' : 'Inactive'}
+                          </div>
+                        </div>
+                        <div className="flex space-x-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setEditingBannerContent(content)}
+                          >
+                            Edit
+                          </Button>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => handleBannerContentDelete(content.id)}
+                          >
+                            Delete
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
           </TabsContent>
         </Tabs>
       </div>

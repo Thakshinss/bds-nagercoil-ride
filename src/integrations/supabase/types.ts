@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      banner_content: {
+        Row: {
+          created_at: string
+          display_order: number
+          id: string
+          is_active: boolean
+          text: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          is_active?: boolean
+          text: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          is_active?: boolean
+          text?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       fares: {
         Row: {
           created_at: string
