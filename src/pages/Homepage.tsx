@@ -1,9 +1,12 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ArrowRight, Star, Clock, Shield, Phone } from 'lucide-react';
 import heroBackground from '@/assets/hero-taxi-background.jpg';
 import BookingForm from '@/components/BookingForm';
 import { Helmet } from 'react-helmet-async';
+import { useEffect, useState } from 'react';
+import { bannerContentService, BannerContent } from '@/services/bannerContentData';
 import van from "../assets/van.jpeg"
 import cabimg from "../assets/bds_logo.png"
 
@@ -12,6 +15,20 @@ import traveller from "../assets/tempo.jpeg"
 import innova from "../assets/innova.jpeg"
 
 const Homepage = () => {
+  const [bannerContent, setBannerContent] = useState<BannerContent[]>([]);
+
+  useEffect(() => {
+    const fetchBannerContent = async () => {
+      try {
+        const content = await bannerContentService.getAll();
+        setBannerContent(content);
+      } catch (error) {
+        console.error('Error fetching banner content:', error);
+      }
+    };
+
+    fetchBannerContent();
+  }, []);
   const fleet = [
     // {
     //   name: 'Auto Ricksaw',
@@ -123,6 +140,53 @@ const Homepage = () => {
           </div>
         </div>
       </section>
+
+      {/* Banner Content Table Section */}
+      {bannerContent.length > 0 && (
+        <section className="py-16 bg-muted">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                Current Offers & Updates
+              </h2>
+              <p className="text-xl text-muted-foreground">
+                Latest announcements and special offers
+              </p>
+            </div>
+            
+            <div className="max-w-4xl mx-auto">
+              <Card>
+                <CardContent className="p-6">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="text-center">Order</TableHead>
+                        <TableHead>Announcement</TableHead>
+                        <TableHead className="text-center">Status</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {bannerContent.map((content) => (
+                        <TableRow key={content.id}>
+                          <TableCell className="text-center font-medium">
+                            {content.display_order}
+                          </TableCell>
+                          <TableCell className="text-lg">{content.text}</TableCell>
+                          <TableCell className="text-center">
+                            <span className="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full">
+                              Active
+                            </span>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Fleet Section */}
       <section className="py-16">
