@@ -143,7 +143,7 @@ const Homepage = () => {
 
       {/* Banner Content Table Section */}
       {bannerContent.length > 0 && (
-        <section className="py-16 bg-muted">
+        <section className="py-16 ">
           <div className="container mx-auto px-4">
             <div className="text-center mb-8">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -155,28 +155,28 @@ const Homepage = () => {
             </div>
             
             <div className="max-w-4xl mx-auto">
-              <Card>
+              <Card className='bg-orange-500 '>
                 <CardContent className="p-6">
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead className="text-center">Order</TableHead>
-                        <TableHead>Announcement</TableHead>
-                        <TableHead className="text-center">Status</TableHead>
+                        {/* <TableHead className="text-center">Order</TableHead> */}
+                        <TableHead className='text-white font-bold text-2xl text-center'>Announcement</TableHead>
+                        {/* <TableHead className="text-center">Status</TableHead> */}
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {bannerContent.map((content) => (
                         <TableRow key={content.id}>
-                          <TableCell className="text-center font-medium">
+                          {/* <TableCell className="text-center font-medium">
                             {content.display_order}
-                          </TableCell>
-                          <TableCell className="text-lg">{content.text}</TableCell>
-                          <TableCell className="text-center">
+                          </TableCell> */}
+                          <TableCell className="text-lg text-white">{content.text}</TableCell>
+                          {/* <TableCell className="text-center">
                             <span className="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full">
                               Active
                             </span>
-                          </TableCell>
+                          </TableCell> */}
                         </TableRow>
                       ))}
                     </TableBody>
@@ -189,7 +189,7 @@ const Homepage = () => {
       )}
 
       {/* Fleet Section */}
-      <section className="py-16">
+      <section className="py-16 bg-muted">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
