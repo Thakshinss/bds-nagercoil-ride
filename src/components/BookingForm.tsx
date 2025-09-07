@@ -319,7 +319,7 @@ const BookingForm = () => {
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                        disabled={(date) => date < new Date()}
+                        disabled={(date) => date < new Date().setHours(0, 0, 0, 0)}
                         initialFocus
                         className="p-3 bg-white text-black opacity-100 pointer-events-auto shadow-lg rounded-md"
                       />
