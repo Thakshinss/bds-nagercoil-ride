@@ -15,6 +15,7 @@ import { Pencil, Trash2, Plus } from 'lucide-react';
 import { fareDataService, FareData } from '@/services/fareData';
 import { tourPackageService, TourPackage } from '@/services/tourPackageData';
 import { bannerContentService, BannerContent } from '@/services/bannerContentData';
+import { bookingService, Booking } from '@/services/bookingData';
 import { FareForm } from '@/components/FareForm';
 import { TourPackageForm } from '@/components/TourPackageForm';
 import BannerContentForm from '@/components/BannerContentForm';
@@ -24,6 +25,7 @@ const Admin = () => {
   const [fares, setFares] = useState<FareData[]>([]);
   const [packages, setPackages] = useState<TourPackage[]>([]);
   const [bannerContent, setBannerContent] = useState<BannerContent[]>([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
   const [editingFare, setEditingFare] = useState<FareData | null>(null);
   const [editingPackage, setEditingPackage] = useState<TourPackage | null>(null);
   const [editingBannerContent, setEditingBannerContent] = useState<BannerContent | null>(null);
@@ -36,6 +38,7 @@ const Admin = () => {
     loadFares();
     loadPackages();
     loadBannerContent();
+    loadBookings();
   }, []);
 
   const loadFares = async () => {
@@ -56,6 +59,19 @@ const Admin = () => {
       toast({
         title: "Error",
         description: "Failed to load banner content",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const loadBookings = async () => {
+    try {
+      const bookingData = await bookingService.getAllBookings();
+      setBookings(bookingData);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to load bookings",
         variant: "destructive",
       });
     }
@@ -282,10 +298,11 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="fares" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="fares">Fare Management</TabsTrigger>
             <TabsTrigger value="packages">Tour Packages</TabsTrigger>
             <TabsTrigger value="banner">Banner Content</TabsTrigger>
+            <TabsTrigger value="bookings">Bookings</TabsTrigger>
           </TabsList>
 
           {/* Fares Tab */}
@@ -515,6 +532,105 @@ const Admin = () => {
                 ))}
               </div>
             </div>
+          </TabsContent>
+
+          {/* Bookings Tab */}
+          <TabsContent value="bookings" className="space-y-6">
+            <Card className="shadow-custom-lg">
+              <CardHeader>
+                <CardTitle className="text-2xl">All Bookings ({bookings.length})</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="font-semibold">Customer</TableHead>
+                        <TableHead className="font-semibold">Mobile</TableHead>
+                        <TableHead className="font-semibold">Route</TableHead>
+                        <TableHead className="font-semibold">Date & Time</TableHead>
+                        <TableHead className="font-semibold">Vehicle</TableHead>
+                        <TableHead className="font-semibold">Trip Type</TableHead>
+                        <TableHead className="font-semibold">Status</TableHead>
+                        <TableHead className="font-semibold text-center">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {bookings.map((booking) => (
+                        <TableRow key={booking.id} className="hover:bg-muted/50">
+                          <TableCell className="font-medium">{booking.customer_name}</TableCell>
+                          <TableCell>{booking.mobile_number}</TableCell>
+                          <TableCell className="max-w-xs">
+                            <div className="text-sm">
+                              <div className="font-medium text-green-600">{booking.pickup_location}</div>
+                              <div className="text-muted-foreground">↓</div>
+                              <div className="font-medium text-red-600">{booking.drop_location}</div>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="text-sm">
+                              <div>{booking.booking_date}</div>
+                              <div className="text-muted-foreground">{booking.booking_time}</div>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                              {booking.vehicle_type}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-secondary/10 text-secondary">
+                              {booking.trip_type}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                              booking.status === 'confirmed' 
+                                ? 'bg-green-100 text-green-700' 
+                                : booking.status === 'cancelled' 
+                                ? 'bg-red-100 text-red-700'
+                                : 'bg-yellow-100 text-yellow-700'
+                            }`}>
+                              {booking.status}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center justify-center gap-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => bookingService.updateBookingStatus(booking.id, 'confirmed').then(() => loadBookings())}
+                                disabled={booking.status === 'confirmed'}
+                              >
+                                Confirm
+                              </Button>
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={() => {
+                                  if (confirm('Are you sure you want to delete this booking?')) {
+                                    bookingService.deleteBooking(booking.id).then(() => loadBookings());
+                                  }
+                                }}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                      {bookings.length === 0 && (
+                        <TableRow>
+                          <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+                            No bookings found
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>

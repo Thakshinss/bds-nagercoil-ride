@@ -68,14 +68,52 @@ const BookingForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState('');
 
-  const onSubmit = (data: BookingFormData) => {
-    console.log('Booking data:', data);
-    toast({
-      title: 'Booking Request Submitted',
-      description: 'We will contact you shortly to confirm your booking.',
-    });
-    sendEmail(data)
-    form.reset();
+  const onSubmit = async (data: BookingFormData) => {
+    setIsSubmitting(true);
+    
+    try {
+      // Save to database
+      const bookingData = {
+        pickup_location: data.pickup,
+        drop_location: data.drop,
+        customer_name: data.name,
+        mobile_number: data.mobile,
+        booking_date: data.date.toISOString().split('T')[0],
+        booking_time: data.time,
+        vehicle_type: data.vehicleType,
+        trip_type: data.tripType,
+        additional_message: data.message || ''
+      };
+
+      const { bookingService } = await import('@/services/bookingData');
+      const savedBooking = await bookingService.createBooking(bookingData);
+
+      if (savedBooking) {
+        toast({
+          title: 'Booking Request Submitted',
+          description: 'We will contact you shortly to confirm your booking.',
+        });
+        
+        // Send email notification
+        sendEmail(data);
+        form.reset();
+      } else {
+        toast({
+          title: 'Error',
+          description: 'Failed to submit booking. Please try again.',
+          variant: 'destructive'
+        });
+      }
+    } catch (error) {
+      console.error('Error submitting booking:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to submit booking. Please try again.',
+        variant: 'destructive'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
 
@@ -319,7 +357,7 @@ const BookingForm = () => {
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                        disabled={(date) => date < new Date().setHours(0, 0, 0, 0)}
+                        disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
                         initialFocus
                         className="p-3 bg-white text-black opacity-100 pointer-events-auto shadow-lg rounded-md"
                       />
@@ -424,8 +462,12 @@ const BookingForm = () => {
             )}
           />
 
-          <Button type="submit" className="w-full bg-gradient-primary hover:bg-primary-dark text-lg py-6">
-            Book Cab Now
+          <Button 
+            type="submit" 
+            disabled={isSubmitting}
+            className="w-full bg-gradient-primary hover:bg-primary-dark text-lg py-6"
+          >
+            {isSubmitting ? 'Submitting...' : 'Book Cab Now'}
           </Button>
         </form>
       </Form>

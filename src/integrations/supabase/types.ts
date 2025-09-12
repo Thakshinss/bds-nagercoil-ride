@@ -41,6 +41,54 @@ export type Database = {
         }
         Relationships: []
       }
+      bookings: {
+        Row: {
+          additional_message: string | null
+          booking_date: string
+          booking_time: string
+          created_at: string
+          customer_name: string
+          drop_location: string
+          id: string
+          mobile_number: string
+          pickup_location: string
+          status: string
+          trip_type: string
+          updated_at: string
+          vehicle_type: string
+        }
+        Insert: {
+          additional_message?: string | null
+          booking_date: string
+          booking_time: string
+          created_at?: string
+          customer_name: string
+          drop_location: string
+          id?: string
+          mobile_number: string
+          pickup_location: string
+          status?: string
+          trip_type: string
+          updated_at?: string
+          vehicle_type: string
+        }
+        Update: {
+          additional_message?: string | null
+          booking_date?: string
+          booking_time?: string
+          created_at?: string
+          customer_name?: string
+          drop_location?: string
+          id?: string
+          mobile_number?: string
+          pickup_location?: string
+          status?: string
+          trip_type?: string
+          updated_at?: string
+          vehicle_type?: string
+        }
+        Relationships: []
+      }
       fares: {
         Row: {
           created_at: string
