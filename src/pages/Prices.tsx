@@ -25,18 +25,18 @@ const Prices = () => {
   return (
     <div className="min-h-screen bg-background py-12">
       <Helmet>
-        <title>Taxi Fare & Pricing - Affordable Rates | BDS Cabs Nagercoil</title>
-        <meta name="description" content="Check transparent taxi fares and pricing for BDS Cabs in Nagercoil. No hidden charges, best rates, 24/7 service. Book your affordable cab ride today!" />
-        <meta name="keywords" content="taxi fare nagercoil, cab pricing, bds cabs rates, affordable taxi, cheap cab fare, taxi cost nagercoil, transparent pricing" />
+        <title>Taxi Fare & Pricing - Affordable Rates | BDS Cabs Tamilnadu</title>
+        <meta name="description" content="Check transparent taxi fares and pricing for BDS Cabs in Tamilnadu. No hidden charges, best rates, 24/7 service. Book your affordable cab ride today!" />
+        <meta name="keywords" content="taxi fare Tamilnadu, cab pricing, bds cabs rates, affordable taxi, cheap cab fare, taxi cost Tamilnadu, transparent pricing" />
         <meta property="og:title" content="Taxi Fare & Pricing - Affordable Rates | BDS Cabs" />
-        <meta property="og:description" content="Transparent taxi pricing in Nagercoil. No hidden charges, competitive rates for all destinations." />
+        <meta property="og:description" content="Transparent taxi pricing in Tamilnadu. No hidden charges, competitive rates for all destinations." />
         <link rel="canonical" href="https://bdscabs.com/prices" />
       </Helmet>
       <div className="container mx-auto px-4">
         {/* Header Section */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Cab Pricing in <span className="text-primary">Nagercoil</span>
+            Cab Pricing in <span className="text-primary">Tamilnadu</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Transparent pricing for all your travel needs. Best rates guaranteed with BDS Cabs.

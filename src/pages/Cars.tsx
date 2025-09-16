@@ -230,7 +230,7 @@ const Cars = () => {
             <Button 
               size="lg" 
               variant="outline" 
-              className="border-white text-white hover:bg-white hover:text-primary text-lg px-8 py-6"
+              className="border-white text-blue-900 hover:bg-white hover:text-primary text-lg px-8 py-6"
             >
               Call +91 98765 43210
             </Button>

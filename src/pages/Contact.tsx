@@ -33,6 +33,11 @@ const Contact = () => {
     }));
   };
 
+  const handleCall = () => {
+    const phoneNumber = "+919790532574"; // Include + for tel:
+    window.location.href = `tel:${phoneNumber}`;
+  };
+
   const contactInfo = [
     {
       icon: Phone,
@@ -97,9 +102,9 @@ const Contact = () => {
                   </div>
                   <h3 className="text-lg font-semibold mb-2">{info.title}</h3>
                   <p className="text-muted-foreground mb-4">{info.details}</p>
-                  <Button size="sm" className="bg-gradient-secondary hover:bg-secondary-dark">
+                  {/* <Button size="sm" className="bg-gradient-secondary hover:bg-secondary-dark" onClick={handleCall}>
                     {info.action}
-                  </Button>
+                  </Button> */}
                 </CardContent>
               </Card>
             ))}
@@ -246,6 +251,7 @@ const Contact = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
+              onClick={handleCall}
               size="lg" 
               variant="secondary"
               className="bg-secondary hover:bg-secondary-dark text-lg px-8 py-6"
