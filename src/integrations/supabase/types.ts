@@ -89,6 +89,51 @@ export type Database = {
         }
         Relationships: []
       }
+      cars: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          features: string[] | null
+          id: string
+          image: string | null
+          is_active: boolean | null
+          name: string
+          price: string
+          rating: number | null
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description?: string | null
+          features?: string[] | null
+          id?: string
+          image?: string | null
+          is_active?: boolean | null
+          name: string
+          price: string
+          rating?: number | null
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          features?: string[] | null
+          id?: string
+          image?: string | null
+          is_active?: boolean | null
+          name?: string
+          price?: string
+          rating?: number | null
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       fares: {
         Row: {
           created_at: string

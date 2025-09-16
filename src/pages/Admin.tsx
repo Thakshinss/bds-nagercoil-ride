@@ -16,9 +16,11 @@ import { fareDataService, FareData } from '@/services/fareData';
 import { tourPackageService, TourPackage } from '@/services/tourPackageData';
 import { bannerContentService, BannerContent } from '@/services/bannerContentData';
 import { bookingService, Booking } from '@/services/bookingData';
+import { carService, Car } from '@/services/carData';
 import { FareForm } from '@/components/FareForm';
 import { TourPackageForm } from '@/components/TourPackageForm';
 import BannerContentForm from '@/components/BannerContentForm';
+import { CarForm } from '@/components/CarForm';
 import { useToast } from '@/hooks/use-toast';
 
 const Admin = () => {
@@ -26,11 +28,14 @@ const Admin = () => {
   const [packages, setPackages] = useState<TourPackage[]>([]);
   const [bannerContent, setBannerContent] = useState<BannerContent[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [cars, setCars] = useState<Car[]>([]);
   const [editingFare, setEditingFare] = useState<FareData | null>(null);
   const [editingPackage, setEditingPackage] = useState<TourPackage | null>(null);
   const [editingBannerContent, setEditingBannerContent] = useState<BannerContent | null>(null);
+  const [editingCar, setEditingCar] = useState<Car | null>(null);
   const [showFareForm, setShowFareForm] = useState(false);
   const [showPackageForm, setShowPackageForm] = useState(false);
+  const [showCarForm, setShowCarForm] = useState(false);
   const [isAddingBannerContent, setIsAddingBannerContent] = useState(false);
   const { toast } = useToast();
 
@@ -39,6 +44,7 @@ const Admin = () => {
     loadPackages();
     loadBannerContent();
     loadBookings();
+    loadCars();
   }, []);
 
   const loadFares = async () => {
@@ -72,6 +78,19 @@ const Admin = () => {
       toast({
         title: "Error",
         description: "Failed to load bookings",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const loadCars = async () => {
+    try {
+      const carData = await carService.getAllCars();
+      setCars(carData);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to load cars",
         variant: "destructive",
       });
     }
@@ -278,6 +297,80 @@ const Admin = () => {
     }
   };
 
+  // Car handlers
+  const handleAddCar = async (carData: Omit<Car, 'id' | 'created_at' | 'updated_at'>) => {
+    const result = await carService.addCar(carData);
+    if (result) {
+      loadCars();
+      setShowCarForm(false);
+      toast({
+        title: "Success",
+        description: "Car added successfully",
+      });
+    } else {
+      toast({
+        title: "Error",
+        description: "Failed to add car",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleUpdateCar = async (carData: Omit<Car, 'id' | 'created_at' | 'updated_at'>) => {
+    if (editingCar) {
+      const success = await carService.updateCar(editingCar.id, carData);
+      if (success) {
+        loadCars();
+        setEditingCar(null);
+        setShowCarForm(false);
+        toast({
+          title: "Success",
+          description: "Car updated successfully",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to update car",
+          variant: "destructive",
+        });
+      }
+    }
+  };
+
+  const handleDeleteCar = async (id: string) => {
+    if (confirm('Are you sure you want to delete this car?')) {
+      const success = await carService.deleteCar(id);
+      if (success) {
+        loadCars();
+        toast({
+          title: "Success",
+          description: "Car deleted successfully",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to delete car",
+          variant: "destructive",
+        });
+      }
+    }
+  };
+
+  const handleEditCar = (car: Car) => {
+    setEditingCar(car);
+    setShowCarForm(true);
+  };
+
+  const handleCancelCarForm = () => {
+    setEditingCar(null);
+    setShowCarForm(false);
+  };
+
+  const handleNewCar = () => {
+    setEditingCar(null);
+    setShowCarForm(true);
+  };
+
   return (
     <div className="min-h-screen bg-background py-12">
       <Helmet>
@@ -298,11 +391,12 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="fares" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="fares">Fare Management</TabsTrigger>
             <TabsTrigger value="packages">Tour Packages</TabsTrigger>
             <TabsTrigger value="banner">Banner Content</TabsTrigger>
             <TabsTrigger value="bookings">Bookings</TabsTrigger>
+            <TabsTrigger value="cars">Cars</TabsTrigger>
           </TabsList>
 
           {/* Fares Tab */}
@@ -626,6 +720,103 @@ const Admin = () => {
                           </TableCell>
                         </TableRow>
                       )}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Cars Tab */}
+          <TabsContent value="cars" className="space-y-6">
+            {/* Add New Car Button */}
+            {!showCarForm && (
+              <div className="mb-6">
+                <Button onClick={handleNewCar} className="flex items-center gap-2">
+                  <Plus className="h-4 w-4" />
+                  Add New Car
+                </Button>
+              </div>
+            )}
+
+            {/* Car Form */}
+            {showCarForm && (
+              <div className="mb-8">
+                <CarForm
+                  car={editingCar || undefined}
+                  onSubmit={editingCar ? handleUpdateCar : handleAddCar}
+                  onCancel={handleCancelCarForm}
+                />
+              </div>
+            )}
+
+            {/* Cars Table */}
+            <Card className="shadow-custom-lg">
+              <CardHeader>
+                <CardTitle className="text-2xl">All Cars ({cars.length})</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="font-semibold">Name</TableHead>
+                        <TableHead className="font-semibold">Category</TableHead>
+                        <TableHead className="font-semibold">Type</TableHead>
+                        <TableHead className="font-semibold">Price</TableHead>
+                        <TableHead className="font-semibold">Rating</TableHead>
+                        <TableHead className="font-semibold">Status</TableHead>
+                        <TableHead className="font-semibold text-center">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {cars.map((car) => (
+                        <TableRow key={car.id} className="hover:bg-muted/50">
+                          <TableCell className="font-medium">{car.name}</TableCell>
+                          <TableCell>
+                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                              {car.category}
+                            </span>
+                          </TableCell>
+                          <TableCell>{car.type}</TableCell>
+                          <TableCell className="font-semibold text-primary">
+                            {car.price}
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center">
+                              <span className="text-yellow-500">★</span>
+                              <span className="ml-1">{car.rating}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                              car.is_active 
+                                ? 'bg-green-100 text-green-800' 
+                                : 'bg-red-100 text-red-800'
+                            }`}>
+                              {car.is_active ? 'Active' : 'Inactive'}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center justify-center gap-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleEditCar(car)}
+                              >
+                                <Pencil className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={() => handleDeleteCar(car.id)}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
                     </TableBody>
                   </Table>
                 </div>

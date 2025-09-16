@@ -1,75 +1,43 @@
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Users, Fuel, Wind, Star } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import { carService, Car } from '@/services/carData';
 
 const Cars = () => {
-  const vehicles = [
-    {
-      category: 'Economy',
-      cars: [
-        {
-          name: 'Maruti Swift',
-          type: 'Hatchback',
-          price: '₹10/km',
-          features: ['AC', '4 Seater', 'Petrol', 'Manual'],
-          rating: 4.5,
-          description: 'Perfect for city rides and short trips'
-        },
-        {
-          name: 'Hyundai i20',
-          type: 'Hatchback',
-          price: '₹12/km',
-          features: ['AC', '4 Seater', 'Petrol', 'Manual'],
-          rating: 4.6,
-          description: 'Comfortable and fuel-efficient'
-        }
-      ]
-    },
-    {
-      category: 'Sedan',
-      cars: [
-        {
-          name: 'Honda City',
-          type: 'Sedan',
-          price: '₹14/km',
-          features: ['AC', '4 Seater', 'Petrol', 'Automatic'],
-          rating: 4.7,
-          description: 'Premium comfort for business travel'
-        },
-        {
-          name: 'Maruti Dzire',
-          type: 'Sedan',
-          price: '₹12/km',
-          features: ['AC', '4 Seater', 'Petrol', 'Manual'],
-          rating: 4.5,
-          description: 'Reliable and spacious sedan'
-        }
-      ]
-    },
-    {
-      category: 'SUV',
-      cars: [
-        {
-          name: 'Toyota Innova',
-          type: 'SUV',
-          price: '₹18/km',
-          features: ['AC', '7 Seater', 'Diesel', 'Manual'],
-          rating: 4.8,
-          description: 'Perfect for family trips and group travel'
-        },
-        {
-          name: 'Mahindra Scorpio',
-          type: 'SUV',
-          price: '₹16/km',
-          features: ['AC', '7 Seater', 'Diesel', 'Manual'],
-          rating: 4.6,
-          description: 'Rugged and reliable for all terrains'
-        }
-      ]
+  const [cars, setCars] = useState<Car[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadCars = async () => {
+      try {
+        const carData = await carService.getActiveCars();
+        setCars(carData);
+      } catch (error) {
+        console.error('Failed to load cars:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCars();
+  }, []);
+
+  // Group cars by category
+  const groupedCars = cars.reduce((acc, car) => {
+    if (!acc[car.category]) {
+      acc[car.category] = [];
     }
-  ];
+    acc[car.category].push(car);
+    return acc;
+  }, {} as Record<string, Car[]>);
+
+  const vehicles = Object.entries(groupedCars).map(([category, cars]) => ({
+    category,
+    cars
+  }));
 
   const specialServices = [
     {
@@ -120,7 +88,16 @@ const Cars = () => {
       {/* Vehicle Categories */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          {vehicles.map((category, categoryIndex) => (
+          {loading ? (
+            <div className="text-center py-12">
+              <p className="text-lg text-muted-foreground">Loading vehicles...</p>
+            </div>
+          ) : vehicles.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-lg text-muted-foreground">No vehicles available at the moment.</p>
+            </div>
+          ) : (
+            vehicles.map((category, categoryIndex) => (
             <div key={categoryIndex} className="mb-16">
               <div className="text-center mb-12">
                 <h2 className="text-3xl font-bold text-foreground mb-4">
@@ -148,8 +125,21 @@ const Cars = () => {
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <div className="aspect-video bg-muted rounded-lg mb-4 flex items-center justify-center">
-                        <span className="text-muted-foreground">{car.name} Image</span>
+                      <div className="aspect-video bg-muted rounded-lg mb-4 flex items-center justify-center overflow-hidden">
+                        {car.image ? (
+                          <img 
+                            src={car.image} 
+                            alt={car.name}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none';
+                              e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                            }}
+                          />
+                        ) : null}
+                        <span className={`text-muted-foreground ${car.image ? 'hidden' : ''}`}>
+                          {car.name} Image
+                        </span>
                       </div>
                       
                       <p className="text-muted-foreground mb-4">{car.description}</p>
@@ -178,7 +168,8 @@ const Cars = () => {
                 ))}
               </div>
             </div>
-          ))}
+          ))
+          )}
         </div>
       </section>
 
