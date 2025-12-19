@@ -13,6 +13,8 @@ import TourPackages from "./pages/TourPackages";
 import Prices from "./pages/Prices";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsAndConditions from "./pages/TermsAndConditions";
 import Navigation from "./components/Navigation";
 import ScrollingBanner from "./components/ScrollingBanner";
 import Footer from "./components/Footer";
@@ -38,6 +40,8 @@ const App = () => (
               <Route path="/prices" element={<Prices />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
               <Route path="/admin_b_d_s" element={<Admin />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
