@@ -117,8 +117,8 @@ const Footer = () => {
             © {new Date().getFullYear()} BDS Cabs. All rights reserved. Best cab service in Tamilnadu.
           </div>
             <div className="flex space-x-6 text-sm">
-              <a href="#" className="text-gray-400 hover:text-primary transition-colors">Privacy Policy</a>
-              <a href="#" className="text-gray-400 hover:text-primary transition-colors">Terms of Service</a>
+              <a href="/privacy-policy" className="text-gray-400 hover:text-primary transition-colors">Privacy Policy</a>
+              <a href="/terms-and-conditions" className="text-gray-400 hover:text-primary transition-colors">Terms of Service</a>
             </div>
           </div>
         </div>
