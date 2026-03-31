@@ -13,6 +13,7 @@ import cabimg from "../assets/bds_logo.png"
 import dezire from  "../assets/dezire.jpeg"
 import traveller from "../assets/tempo.jpeg"
 import innova from "../assets/innova.jpeg"
+import cabAppIllustration from "@/assets/cab-app-illustration.png"
 
 const Homepage = () => {
   const [bannerContent, setBannerContent] = useState<BannerContent[]>([]);
