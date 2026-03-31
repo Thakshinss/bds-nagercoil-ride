@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { ArrowRight, Star, Clock, Shield, Phone } from 'lucide-react';
+import { ArrowRight, Star, Clock, Shield, Phone, Download, Smartphone } from 'lucide-react';
 import heroBackground from '@/assets/hero-taxi-background.jpg';
 import BookingForm from '@/components/BookingForm';
 import { Helmet } from 'react-helmet-async';
