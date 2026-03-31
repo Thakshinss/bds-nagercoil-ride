@@ -129,35 +129,35 @@ const Homepage = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8">
             <div className="flex-1 text-center md:text-left">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 text-white rounded-full text-sm font-medium mb-4">
                 <Smartphone className="w-4 h-4" />
                 Now Available on Google Play
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
                 Download the BDS Cabs App
               </h2>
-              <p className="text-lg text-muted-foreground mb-6">
+              <p className="text-lg text-gray-200 mb-6">
                 Book cabs instantly, track your ride in real-time, and enjoy exclusive app-only offers. Get the BDS Cabs experience right on your phone.
               </p>
-              <ul className="space-y-3 mb-8 text-muted-foreground">
-                <li className="flex items-center gap-2"><Star className="w-4 h-4 text-primary" /> Easy one-tap booking</li>
-                <li className="flex items-center gap-2"><Clock className="w-4 h-4 text-primary" /> Real-time ride tracking</li>
-                <li className="flex items-center gap-2"><Shield className="w-4 h-4 text-primary" /> Secure & safe rides</li>
+              <ul className="space-y-3 mb-8 text-gray-200">
+                <li className="flex items-center gap-2"><Star className="w-4 h-4 text-secondary" /> Easy one-tap booking</li>
+                <li className="flex items-center gap-2"><Clock className="w-4 h-4 text-secondary" /> Real-time ride tracking</li>
+                <li className="flex items-center gap-2"><Shield className="w-4 h-4 text-secondary" /> Secure & safe rides</li>
               </ul>
               <a
                 href="https://play.google.com/store/apps/details?id=com.bdscabs.app&pcampaignid=web_share"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Button size="lg" className="bg-gradient-primary hover:bg-primary-dark text-lg px-8 py-6">
+                <Button size="lg" className="bg-secondary hover:bg-secondary-dark text-lg px-8 py-6">
                   <Download className="mr-2 w-5 h-5" />
                   Get it on Google Play
                 </Button>
               </a>
             </div>
             <div className="flex-shrink-0">
-              <div className="w-48 h-48 md:w-56 md:h-56 bg-primary/10 rounded-3xl flex items-center justify-center">
-                <Smartphone className="w-24 h-24 md:w-32 md:h-32 text-primary" />
+              <div className="w-48 h-48 md:w-56 md:h-56 bg-white/10 rounded-3xl flex items-center justify-center">
+                <Smartphone className="w-24 h-24 md:w-32 md:h-32 text-white" />
               </div>
             </div>
           </div>
