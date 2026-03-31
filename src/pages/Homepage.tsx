@@ -13,6 +13,7 @@ import cabimg from "../assets/bds_logo.png"
 import dezire from  "../assets/dezire.jpeg"
 import traveller from "../assets/tempo.jpeg"
 import innova from "../assets/innova.jpeg"
+import cabAppIllustration from "@/assets/cab-app-illustration.png"
 
 const Homepage = () => {
   const [bannerContent, setBannerContent] = useState<BannerContent[]>([]);
@@ -156,9 +157,7 @@ const Homepage = () => {
               </a>
             </div>
             <div className="flex-shrink-0">
-              <div className="w-48 h-48 md:w-56 md:h-56 bg-white/10 rounded-3xl flex items-center justify-center">
-                <Smartphone className="w-24 h-24 md:w-32 md:h-32 text-white" />
-              </div>
+              <img src={cabAppIllustration} alt="BDS Cabs mobile app" className="w-48 h-48 md:w-56 md:h-56 object-contain" loading="lazy" width={512} height={512} />
             </div>
           </div>
         </div>
