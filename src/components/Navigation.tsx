@@ -56,6 +56,14 @@ const Navigation = () => {
               </NavLink>
             ))}
             
+            {/* Install App Button */}
+            <a href="https://play.google.com/store/apps/details?id=com.bdscabs.app&pcampaignid=web_share" target="_blank" rel="noopener noreferrer">
+              <Button variant="outline" size="sm" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+                <Download className="w-4 h-4 mr-2" />
+                Install App
+              </Button>
+            </a>
+
             {/* Call Button */}
             <Button onClick={handleCall} variant="default" size="sm" className="bg-gradient-secondary hover:bg-secondary-dark">
               <Phone className="w-4 h-4 mr-2" />
