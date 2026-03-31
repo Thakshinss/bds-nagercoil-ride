@@ -125,7 +125,7 @@ const Homepage = () => {
       </section>
 
       {/* Download App Section */}
-      <section className="py-16 bg-muted">
+      <section className="py-16 bg-gradient-hero text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8">
             <div className="flex-1 text-center md:text-left">
