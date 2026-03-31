@@ -20,8 +20,8 @@ const Contact = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Fire Google Ads conversion event
-    if (typeof window.gtag === 'function') {
-      window.gtag('event', 'conversion', { 'send_to': 'AW-18032867432/u_amCIi8jo4cEOjw3pZD' });
+    if (typeof (window as any).gtag === 'function') {
+      (window as any).gtag('event', 'conversion', { 'send_to': 'AW-18032867432/u_amCIi8jo4cEOjw3pZD' });
     }
     toast({
       title: "Message Sent!",
