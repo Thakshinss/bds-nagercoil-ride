@@ -1,50 +1,32 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { format } from 'date-fns';
-import { CalendarIcon, MapPin, User, Phone, Car, MessageSquare, Clock } from 'lucide-react';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { format } from "date-fns";
+import { CalendarIcon, MapPin, User, Phone, Car, MessageSquare, Clock } from "lucide-react";
 import emailjs from "@emailjs/browser";
 
-
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Calendar } from '@/components/ui/calendar';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import { cn } from '@/lib/utils';
-import { toast } from '@/components/ui/use-toast';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Calendar } from "@/components/ui/calendar";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { toast } from "@/components/ui/use-toast";
 
 const bookingSchema = z.object({
-  pickup: z.string().min(1, 'Pickup location is required'),
-  drop: z.string().min(1, 'Drop location is required'),
-  name: z.string().min(1, 'Name is required'),
-  mobile: z.string().min(10, 'Valid mobile number is required'),
+  pickup: z.string().min(1, "Pickup location is required"),
+  drop: z.string().min(1, "Drop location is required"),
+  name: z.string().min(1, "Name is required"),
+  mobile: z.string().min(10, "Valid mobile number is required"),
   date: z.date().refine((date) => date !== undefined, {
-    message: 'Date is required',
+    message: "Date is required",
   }),
-  time: z.string().min(1, 'Time is required'),
-  vehicleType: z.string().min(1, 'Vehicle type is required'),
-  tripType: z.string().min(1, 'Trip type is required'),
+  time: z.string().min(1, "Time is required"),
+  vehicleType: z.string().min(1, "Vehicle type is required"),
+  tripType: z.string().min(1, "Trip type is required"),
   message: z.string().optional(),
 });
 
@@ -54,23 +36,23 @@ const BookingForm = () => {
   const form = useForm<BookingFormData>({
     resolver: zodResolver(bookingSchema),
     defaultValues: {
-      pickup: '',
-      drop: '',
-      name: '',
-      mobile: '',
-      time: '',
-      vehicleType: '',
-      tripType: '',
-      message: '',
+      pickup: "",
+      drop: "",
+      name: "",
+      mobile: "",
+      time: "",
+      vehicleType: "",
+      tripType: "",
+      message: "",
     },
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState('');
+  const [submitStatus, setSubmitStatus] = useState("");
 
   const onSubmit = async (data: BookingFormData) => {
     setIsSubmitting(true);
-    
+
     try {
       // Save to database
       const bookingData = {
@@ -78,60 +60,59 @@ const BookingForm = () => {
         drop_location: data.drop,
         customer_name: data.name,
         mobile_number: data.mobile,
-        booking_date: data.date.toISOString().split('T')[0],
+        booking_date: data.date.toISOString().split("T")[0],
         booking_time: data.time,
         vehicle_type: data.vehicleType,
         trip_type: data.tripType,
-        additional_message: data.message || ''
+        additional_message: data.message || "",
       };
 
-      const { bookingService } = await import('@/services/bookingData');
+      const { bookingService } = await import("@/services/bookingData");
       const savedBooking = await bookingService.createBooking(bookingData);
 
       if (savedBooking) {
         toast({
-          title: 'Booking Request Submitted',
-          description: 'We will contact you shortly to confirm your booking.',
+          title: "Booking Request Submitted",
+          description: "We will contact you shortly to confirm your booking.",
         });
-        
+
         // Send email notification
         sendEmail(data);
         form.reset();
       } else {
         toast({
-          title: 'Error',
-          description: 'Failed to submit booking. Please try again.',
-          variant: 'destructive'
+          title: "Error",
+          description: "Failed to submit booking. Please try again.",
+          variant: "destructive",
         });
       }
     } catch (error) {
-      console.error('Error submitting booking:', error);
+      console.error("Error submitting booking:", error);
       toast({
-        title: 'Error',
-        description: 'Failed to submit booking. Please try again.',
-        variant: 'destructive'
+        title: "Error",
+        description: "Failed to submit booking. Please try again.",
+        variant: "destructive",
       });
     } finally {
       setIsSubmitting(false);
     }
   };
 
-
   const sendEmail = async (formData: BookingFormData) => {
     console.log("Sending email with data:", formData);
-  
+
     setIsSubmitting(true);
-    setSubmitStatus('');
-  
+    setSubmitStatus("");
+
     try {
       // Replace these with your actual EmailJS credentials
-      const serviceId = 'service_k778iw9';
-      const templateId = 'template_kqu4po7';
-      const publicKey = 'sZdi8W7DdkDXusuSB';
-  
+      const serviceId = "service_k778iw9";
+      const templateId = "template_kqu4po7";
+      const publicKey = "sZdi8W7DdkDXusuSB";
+
       // Initialize EmailJS
       emailjs.init(publicKey);
-  
+
       const templateParams = {
         to_name: "Taxi Service",
         customer_name: formData.name,
@@ -144,19 +125,19 @@ const BookingForm = () => {
         booking_time: formData.time,
         customer_message: formData.message || "",
       };
-  
+
       console.log("Template params:", templateParams);
-  
+
       await emailjs.send(serviceId, templateId, templateParams);
-  
-      setSubmitStatus('success');
+
+      setSubmitStatus("success");
       toast({
         title: "Booking Request Sent ✅",
         description: "We’ll contact you soon to confirm your ride.",
       });
     } catch (error) {
       console.error("EmailJS Error:", error);
-      setSubmitStatus('error');
+      setSubmitStatus("error");
       toast({
         title: "Error ❌",
         description: "Something went wrong. Please try again.",
@@ -170,8 +151,8 @@ const BookingForm = () => {
   // const sendEmail = async (formData) => {
   //   console.log(formData,"formData")
   //   // Basic validation
-  //   if (!formData.name || !formData.mobile || !formData.taxiType || !formData.members || 
-  //       !formData.tripType || !formData.pickupLocation || !formData.dropLocation || 
+  //   if (!formData.name || !formData.mobile || !formData.taxiType || !formData.members ||
+  //       !formData.tripType || !formData.pickupLocation || !formData.dropLocation ||
   //       !formData.date || !formData.time) {
   //     setSubmitStatus('validation');
   //     return;
@@ -191,11 +172,11 @@ const BookingForm = () => {
   //       const script = document.createElement('script');
   //       script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js';
   //       document.head.appendChild(script);
-        
+
   //       await new Promise((resolve) => {
   //         script.onload = resolve;
   //       });
-        
+
   //       window.emailjs.init(publicKey);
   //     }
 
@@ -217,7 +198,7 @@ const BookingForm = () => {
   //     console.log(templateParams,"template params")
 
   //     await window.emailjs.send(serviceId, templateId, templateParams);
-      
+
   //     setSubmitStatus('success');
   //     console.log(submitStatus,"ststus");
   //     // setFormData({
@@ -240,12 +221,13 @@ const BookingForm = () => {
   //   }
   // };
 
-
   return (
     <div className="bg-background/95 backdrop-blur-sm border border-border rounded-lg p-6 shadow-custom-lg max-w-4xl mx-auto mb-14">
       <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold text-foreground mb-2">Book Your <span className="text-secondary">Ride</span></h2>
-        <p className="text-muted-foreground">Fill in the details to book your cab instantly</p>
+        <h2 className="text-2xl font-bold text-foreground mb-2">
+          Book Your <span className="text-secondary">Ride</span>
+        </h2>
+        <p className="text-muted-foreground">Fill in the details to book your cab instantly..</p>
       </div>
 
       <Form {...form}>
@@ -338,16 +320,9 @@ const BookingForm = () => {
                       <FormControl>
                         <Button
                           variant="outline"
-                          className={cn(
-                            "w-full pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
-                          )}
+                          className={cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
                         >
-                          {field.value ? (
-                            format(field.value, "PPP")
-                          ) : (
-                            <span>Pick a date</span>
-                          )}
+                          {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
                           <CalendarIcon className="ml-auto h-4 w-4" />
                         </Button>
                       </FormControl>
@@ -451,7 +426,7 @@ const BookingForm = () => {
                   Additional Message (Optional)
                 </FormLabel>
                 <FormControl>
-                  <Textarea 
+                  <Textarea
                     placeholder="Any special requirements or additional information"
                     className="min-h-[80px]"
                     {...field}
@@ -462,12 +437,12 @@ const BookingForm = () => {
             )}
           />
 
-          <Button 
-            type="submit" 
+          <Button
+            type="submit"
             disabled={isSubmitting}
             className="w-full bg-gradient-primary hover:bg-primary-dark text-lg py-6"
           >
-            {isSubmitting ? 'Submitting...' : 'Book Cab Now'}
+            {isSubmitting ? "Submitting..." : "Book Cab Now"}
           </Button>
         </form>
       </Form>
