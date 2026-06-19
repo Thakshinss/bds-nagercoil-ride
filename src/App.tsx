@@ -23,6 +23,7 @@ import Auth from "./pages/Auth";
 import BookRide from "./pages/BookRide";
 import MyRides from "./pages/MyRides";
 import { AuthProvider } from "./hooks/useAuth";
+import AdminRoute from "./components/AdminRoute";
 
 const queryClient = new QueryClient();
 
@@ -47,7 +48,7 @@ const App = () => (
               <Route path="/contact" element={<Contact />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-              <Route path="/admin_b_d_s" element={<Admin />} />
+              <Route path="/admin_b_d_s" element={<AdminRoute><Admin /></AdminRoute>} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/book" element={<BookRide />} />
               <Route path="/my-rides" element={<MyRides />} />
