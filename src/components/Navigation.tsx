@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Phone, Download } from 'lucide-react';
+import { Menu, X, Phone, Download, User } from 'lucide-react';
 import cabimg from "../assets/bds_new_logo.png"
+import { useAuth } from '@/hooks/useAuth';
 
 
 const handleCall = () => {
@@ -12,6 +13,7 @@ const handleCall = () => {
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user } = useAuth();
 
   const navItems = [
     { name: 'Home', path: '/' },
@@ -64,6 +66,14 @@ const Navigation = () => {
               </Button>
             </a>
 
+            {/* Account */}
+            <Link to={user ? '/my-rides' : '/auth'}>
+              <Button variant="ghost" size="sm">
+                <User className="w-4 h-4 mr-1" />
+                {user ? 'My Rides' : 'Sign In'}
+              </Button>
+            </Link>
+
             {/* Call Button */}
             <Button onClick={handleCall} variant="default" size="sm" className="bg-gradient-secondary hover:bg-secondary-dark">
               <Phone className="w-4 h-4 mr-2" />
@@ -106,6 +116,12 @@ const Navigation = () => {
                   Install App
                 </Button>
               </a>
+              <Link to={user ? '/my-rides' : '/auth'} onClick={() => setIsOpen(false)}>
+                <Button variant="ghost" size="sm" className="w-fit mt-2">
+                  <User className="w-4 h-4 mr-1" />
+                  {user ? 'My Rides' : 'Sign In'}
+                </Button>
+              </Link>
               <Button onClick={handleCall} variant="default" size="sm" className="bg-gradient-secondary hover:bg-secondary-dark w-fit mt-2">
                 <Phone className="w-4 h-4 mr-2" />
                 Call Now

@@ -134,6 +134,57 @@ export type Database = {
         }
         Relationships: []
       }
+      customer_bookings: {
+        Row: {
+          booking_date: string
+          booking_time: string
+          created_at: string
+          distance_km: number | null
+          drop_location: string
+          estimated_fare: number | null
+          id: string
+          notes: string | null
+          pickup_location: string
+          status: string
+          trip_type: string
+          updated_at: string
+          user_id: string
+          vehicle_type: string
+        }
+        Insert: {
+          booking_date: string
+          booking_time: string
+          created_at?: string
+          distance_km?: number | null
+          drop_location: string
+          estimated_fare?: number | null
+          id?: string
+          notes?: string | null
+          pickup_location: string
+          status?: string
+          trip_type?: string
+          updated_at?: string
+          user_id: string
+          vehicle_type: string
+        }
+        Update: {
+          booking_date?: string
+          booking_time?: string
+          created_at?: string
+          distance_km?: number | null
+          drop_location?: string
+          estimated_fare?: number | null
+          id?: string
+          notes?: string | null
+          pickup_location?: string
+          status?: string
+          trip_type?: string
+          updated_at?: string
+          user_id?: string
+          vehicle_type?: string
+        }
+        Relationships: []
+      }
       fares: {
         Row: {
           created_at: string
@@ -161,6 +212,57 @@ export type Database = {
           to_location?: string
           updated_at?: string
           vehicle_type?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      saved_locations: {
+        Row: {
+          address: string
+          created_at: string
+          id: string
+          label: string
+          user_id: string
+        }
+        Insert: {
+          address: string
+          created_at?: string
+          id?: string
+          label: string
+          user_id: string
+        }
+        Update: {
+          address?: string
+          created_at?: string
+          id?: string
+          label?: string
+          user_id?: string
         }
         Relationships: []
       }

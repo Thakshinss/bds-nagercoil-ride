@@ -19,6 +19,10 @@ import Navigation from "./components/Navigation";
 import ScrollingBanner from "./components/ScrollingBanner";
 import Footer from "./components/Footer";
 import WhatsAppButton from "./components/WhatsAppButton";
+import Auth from "./pages/Auth";
+import BookRide from "./pages/BookRide";
+import MyRides from "./pages/MyRides";
+import { AuthProvider } from "./hooks/useAuth";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +33,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+        <AuthProvider>
         <div className="min-h-screen flex flex-col">
           <ScrollingBanner />
           <Navigation />
@@ -43,6 +48,9 @@ const App = () => (
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
               <Route path="/admin_b_d_s" element={<Admin />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/book" element={<BookRide />} />
+              <Route path="/my-rides" element={<MyRides />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
@@ -50,6 +58,7 @@ const App = () => (
           <Footer />
           <WhatsAppButton />
         </div>
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </HelmetProvider>
