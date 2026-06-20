@@ -48,6 +48,7 @@ export type Database = {
           booking_time: string
           created_at: string
           customer_name: string
+          driver_id: string | null
           drop_location: string
           id: string
           mobile_number: string
@@ -63,6 +64,7 @@ export type Database = {
           booking_time: string
           created_at?: string
           customer_name: string
+          driver_id?: string | null
           drop_location: string
           id?: string
           mobile_number: string
@@ -78,6 +80,7 @@ export type Database = {
           booking_time?: string
           created_at?: string
           customer_name?: string
+          driver_id?: string | null
           drop_location?: string
           id?: string
           mobile_number?: string
@@ -182,6 +185,39 @@ export type Database = {
           updated_at?: string
           user_id?: string
           vehicle_type?: string
+        }
+        Relationships: []
+      }
+      driver_applications: {
+        Row: {
+          created_at: string
+          experience_years: number | null
+          id: string
+          license_number: string
+          status: string
+          updated_at: string
+          user_id: string
+          vehicle_info: string | null
+        }
+        Insert: {
+          created_at?: string
+          experience_years?: number | null
+          id?: string
+          license_number: string
+          status?: string
+          updated_at?: string
+          user_id: string
+          vehicle_info?: string | null
+        }
+        Update: {
+          created_at?: string
+          experience_years?: number | null
+          id?: string
+          license_number?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+          vehicle_info?: string | null
         }
         Relationships: []
       }
@@ -337,7 +373,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "admin" | "user"
+      app_role: "admin" | "user" | "driver"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -465,7 +501,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "user"],
+      app_role: ["admin", "user", "driver"],
     },
   },
 } as const
