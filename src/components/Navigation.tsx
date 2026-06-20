@@ -66,6 +66,11 @@ const Navigation = () => {
               </Button>
             </a>
 
+            {/* Drive with us */}
+            <Link to="/become-a-driver">
+              <Button variant="ghost" size="sm">Drive with us</Button>
+            </Link>
+
             {/* Account */}
             <Link to={user ? '/my-rides' : '/auth'}>
               <Button variant="ghost" size="sm">

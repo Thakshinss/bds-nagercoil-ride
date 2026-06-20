@@ -22,6 +22,7 @@ import WhatsAppButton from "./components/WhatsAppButton";
 import Auth from "./pages/Auth";
 import BookRide from "./pages/BookRide";
 import MyRides from "./pages/MyRides";
+import BecomeDriver from "./pages/BecomeDriver";
 import { AuthProvider } from "./hooks/useAuth";
 import AdminRoute from "./components/AdminRoute";
 
@@ -52,6 +53,7 @@ const App = () => (
               <Route path="/auth" element={<Auth />} />
               <Route path="/book" element={<BookRide />} />
               <Route path="/my-rides" element={<MyRides />} />
+              <Route path="/become-a-driver" element={<BecomeDriver />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
