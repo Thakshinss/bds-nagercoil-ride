@@ -21,6 +21,7 @@ import { FareForm } from '@/components/FareForm';
 import { TourPackageForm } from '@/components/TourPackageForm';
 import BannerContentForm from '@/components/BannerContentForm';
 import { CarForm } from '@/components/CarForm';
+import DriverApplicationsTab from '@/components/admin/DriverApplicationsTab';
 import { useToast } from '@/hooks/use-toast';
 
 const Admin = () => {
@@ -391,12 +392,13 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="fares" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="fares">Fare Management</TabsTrigger>
-            <TabsTrigger value="packages">Tour Packages</TabsTrigger>
-            <TabsTrigger value="banner">Banner Content</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-6">
+            <TabsTrigger value="fares">Fares</TabsTrigger>
+            <TabsTrigger value="packages">Packages</TabsTrigger>
+            <TabsTrigger value="banner">Banner</TabsTrigger>
             <TabsTrigger value="bookings">Bookings</TabsTrigger>
             <TabsTrigger value="cars">Cars</TabsTrigger>
+            <TabsTrigger value="drivers">Drivers</TabsTrigger>
           </TabsList>
 
           {/* Fares Tab */}
@@ -822,6 +824,11 @@ const Admin = () => {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Drivers Tab */}
+          <TabsContent value="drivers" className="space-y-6">
+            <DriverApplicationsTab />
           </TabsContent>
         </Tabs>
       </div>
