@@ -25,6 +25,8 @@ import MyRides from "./pages/MyRides";
 import BecomeDriver from "./pages/BecomeDriver";
 import { AuthProvider } from "./hooks/useAuth";
 import AdminRoute from "./components/AdminRoute";
+import DriverRoute from "./components/DriverRoute";
+import DriverDashboard from "./pages/DriverDashboard";
 
 const queryClient = new QueryClient();
 
@@ -54,6 +56,7 @@ const App = () => (
               <Route path="/book" element={<BookRide />} />
               <Route path="/my-rides" element={<MyRides />} />
               <Route path="/become-a-driver" element={<BecomeDriver />} />
+              <Route path="/driver" element={<DriverRoute><DriverDashboard /></DriverRoute>} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
