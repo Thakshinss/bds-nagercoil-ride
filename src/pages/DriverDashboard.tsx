@@ -6,9 +6,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { MapPin, Calendar, Clock, Phone, User, Loader2 } from 'lucide-react';
+import { MapPin, Calendar, Clock, Phone, User, Loader2, CheckCircle2 } from 'lucide-react';
 
-interface AssignedBooking {
+interface DriverBooking {
   id: string;
   customer_name: string;
   mobile_number: string;
@@ -20,6 +20,7 @@ interface AssignedBooking {
   trip_type: string;
   additional_message: string | null;
   status: string;
+  driver_id: string | null;
   created_at: string;
 }
 
@@ -34,21 +35,21 @@ const STATUS_OPTIONS = ['assigned', 'in_progress', 'completed', 'cancelled'];
 const DriverDashboard = () => {
   const { user, signOut } = useAuth();
   const { toast } = useToast();
-  const [bookings, setBookings] = useState<AssignedBooking[]>([]);
+  const [bookings, setBookings] = useState<DriverBooking[]>([]);
   const [loading, setLoading] = useState(true);
-  const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [busyId, setBusyId] = useState<string | null>(null);
 
   const fetchBookings = async () => {
     setLoading(true);
+    // RLS surfaces: own assigned trips + any unassigned (driver_id IS NULL)
     const { data, error } = await supabase
       .from('bookings')
       .select('*')
-      .eq('driver_id', user!.id)
       .order('booking_date', { ascending: true });
     if (error) {
       toast({ title: 'Could not load bookings', description: error.message, variant: 'destructive' });
     } else {
-      setBookings((data as AssignedBooking[]) ?? []);
+      setBookings((data as DriverBooking[]) ?? []);
     }
     setLoading(false);
   };
@@ -60,7 +61,7 @@ const DriverDashboard = () => {
   }, [user]);
 
   const updateStatus = async (id: string, status: string) => {
-    setUpdatingId(id);
+    setBusyId(id);
     const { error } = await supabase.from('bookings').update({ status }).eq('id', id);
     if (error) {
       toast({ title: 'Update failed', description: error.message, variant: 'destructive' });
@@ -68,11 +69,30 @@ const DriverDashboard = () => {
       setBookings((prev) => prev.map((b) => (b.id === id ? { ...b, status } : b)));
       toast({ title: 'Status updated' });
     }
-    setUpdatingId(null);
+    setBusyId(null);
   };
 
-  const active = bookings.filter((b) => !['completed', 'cancelled'].includes(b.status));
-  const past = bookings.filter((b) => ['completed', 'cancelled'].includes(b.status));
+  const claim = async (id: string) => {
+    setBusyId(id);
+    const { error } = await supabase
+      .from('bookings')
+      .update({ driver_id: user!.id, status: 'assigned' })
+      .eq('id', id);
+    if (error) {
+      toast({ title: 'Could not claim trip', description: error.message, variant: 'destructive' });
+    } else {
+      setBookings((prev) =>
+        prev.map((b) => (b.id === id ? { ...b, driver_id: user!.id, status: 'assigned' } : b)),
+      );
+      toast({ title: 'Trip claimed' });
+    }
+    setBusyId(null);
+  };
+
+  const available = bookings.filter((b) => !b.driver_id);
+  const mine = bookings.filter((b) => b.driver_id === user?.id);
+  const active = mine.filter((b) => !['completed', 'cancelled'].includes(b.status));
+  const past = mine.filter((b) => ['completed', 'cancelled'].includes(b.status));
 
   return (
     <>
@@ -84,7 +104,7 @@ const DriverDashboard = () => {
         <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
           <div>
             <h1 className="text-3xl font-bold text-blue-950">Driver Dashboard</h1>
-            <p className="text-muted-foreground">Trips assigned to you</p>
+            <p className="text-muted-foreground">Customer bookings and your assigned trips</p>
           </div>
           <Button variant="outline" onClick={() => signOut()}>Sign Out</Button>
         </div>
@@ -94,26 +114,45 @@ const DriverDashboard = () => {
         ) : bookings.length === 0 ? (
           <Card>
             <CardContent className="py-10 text-center text-muted-foreground">
-              No trips assigned yet. Check back soon.
+              No bookings yet. New customer bookings will appear here.
             </CardContent>
           </Card>
         ) : (
-          <div className="grid gap-8">
+          <div className="grid gap-10">
+            <section>
+              <h2 className="text-xl font-semibold mb-3">Available Bookings ({available.length})</h2>
+              {available.length === 0 ? (
+                <p className="text-muted-foreground text-sm">No unassigned bookings right now.</p>
+              ) : (
+                <div className="grid gap-4">
+                  {available.map((b) => (
+                    <BookingCard
+                      key={b.id}
+                      b={b}
+                      busy={busyId === b.id}
+                      onClaim={() => claim(b.id)}
+                    />
+                  ))}
+                </div>
+              )}
+            </section>
+
             {active.length > 0 && (
               <section>
-                <h2 className="text-xl font-semibold mb-3">Active Trips ({active.length})</h2>
+                <h2 className="text-xl font-semibold mb-3">My Active Trips ({active.length})</h2>
                 <div className="grid gap-4">
                   {active.map((b) => (
                     <BookingCard
                       key={b.id}
                       b={b}
-                      updating={updatingId === b.id}
+                      busy={busyId === b.id}
                       onStatusChange={(s) => updateStatus(b.id, s)}
                     />
                   ))}
                 </div>
               </section>
             )}
+
             {past.length > 0 && (
               <section>
                 <h2 className="text-xl font-semibold mb-3">History</h2>
@@ -131,12 +170,14 @@ const DriverDashboard = () => {
 
 const BookingCard = ({
   b,
-  updating,
+  busy,
   onStatusChange,
+  onClaim,
 }: {
-  b: AssignedBooking;
-  updating?: boolean;
+  b: DriverBooking;
+  busy?: boolean;
   onStatusChange?: (status: string) => void;
+  onClaim?: () => void;
 }) => (
   <Card>
     <CardHeader className="pb-3">
@@ -163,6 +204,16 @@ const BookingCard = ({
       {b.additional_message && (
         <div className="mt-1 rounded-md bg-muted p-2 text-muted-foreground"><b>Note:</b> {b.additional_message}</div>
       )}
+
+      {onClaim && (
+        <div className="mt-3 pt-3 border-t">
+          <Button size="sm" onClick={onClaim} disabled={busy}>
+            {busy ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <CheckCircle2 className="w-4 h-4 mr-2" />}
+            Claim this trip
+          </Button>
+        </div>
+      )}
+
       {onStatusChange && (
         <div className="flex flex-wrap items-center gap-2 mt-3 pt-3 border-t">
           <span className="text-sm font-medium">Update status:</span>
@@ -171,7 +222,7 @@ const BookingCard = ({
               key={s}
               size="sm"
               variant={b.status === s ? 'default' : 'outline'}
-              disabled={updating || b.status === s}
+              disabled={busy || b.status === s}
               onClick={() => onStatusChange(s)}
               className="capitalize"
             >
