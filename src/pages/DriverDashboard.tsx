@@ -6,22 +6,28 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { MapPin, Calendar, Clock, Phone, User, Loader2 } from "lucide-react";
+import { MapPin, Calendar, Clock, Phone, User, Loader2, IndianRupee, Route } from "lucide-react";
 
-interface AssignedBooking {
+interface CustomerBooking {
   id: string;
-  customer_name: string;
-  mobile_number: string;
+  user_id: string;
   pickup_location: string;
   drop_location: string;
   booking_date: string;
   booking_time: string;
   vehicle_type: string;
   trip_type: string;
-  additional_message: string | null;
+  distance_km: number | null;
+  estimated_fare: number | null;
+  notes: string | null;
   status: string;
   created_at: string;
+  customer_name?: string | null;
+  customer_phone?: string | null;
+  customer_email?: string | null;
 }
+
+const STATUS_OPTIONS = ["pending", "confirmed", "in_progress", "completed", "cancelled"];
 
 const statusVariant = (s: string): "default" | "secondary" | "destructive" => {
   if (s === "completed") return "default";
@@ -29,27 +35,48 @@ const statusVariant = (s: string): "default" | "secondary" | "destructive" => {
   return "secondary";
 };
 
-const STATUS_OPTIONS = ["assigned", "in_progress", "completed", "cancelled"];
-
 const DriverDashboard = () => {
   const { user, signOut } = useAuth();
   const { toast } = useToast();
-  const [bookings, setBookings] = useState<AssignedBooking[]>([]);
+  const [bookings, setBookings] = useState<CustomerBooking[]>([]);
   const [loading, setLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
 
   const fetchBookings = async () => {
     setLoading(true);
     const { data, error } = await supabase
-      .from("bookings")
+      .from("customer_bookings")
       .select("*")
-      .eq("driver_id", user!.id)
-      .order("booking_date", { ascending: true });
+      .order("booking_date", { ascending: false });
+
     if (error) {
       toast({ title: "Could not load bookings", description: error.message, variant: "destructive" });
-    } else {
-      setBookings((data as AssignedBooking[]) ?? []);
+      setLoading(false);
+      return;
     }
+
+    const rows = (data ?? []) as CustomerBooking[];
+    const userIds = Array.from(new Set(rows.map((r) => r.user_id)));
+    let profileMap: Record<string, { full_name: string | null; phone: string | null; email: string | null }> = {};
+
+    if (userIds.length) {
+      const { data: profiles } = await supabase
+        .from("profiles")
+        .select("id, full_name, phone, email")
+        .in("id", userIds);
+      profileMap = Object.fromEntries(
+        (profiles ?? []).map((p) => [p.id, { full_name: p.full_name, phone: p.phone, email: p.email }])
+      );
+    }
+
+    setBookings(
+      rows.map((r) => ({
+        ...r,
+        customer_name: profileMap[r.user_id]?.full_name ?? null,
+        customer_phone: profileMap[r.user_id]?.phone ?? null,
+        customer_email: profileMap[r.user_id]?.email ?? null,
+      }))
+    );
     setLoading(false);
   };
 
@@ -61,7 +88,7 @@ const DriverDashboard = () => {
 
   const updateStatus = async (id: string, status: string) => {
     setUpdatingId(id);
-    const { error } = await supabase.from("bookings").update({ status }).eq("id", id);
+    const { error } = await supabase.from("customer_bookings").update({ status }).eq("id", id);
     if (error) {
       toast({ title: "Update failed", description: error.message, variant: "destructive" });
     } else {
@@ -84,7 +111,7 @@ const DriverDashboard = () => {
         <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
           <div>
             <h1 className="text-3xl font-bold text-blue-950">Driver Dashboard</h1>
-            <p className="text-muted-foreground">Trips assigned to you</p>
+            <p className="text-muted-foreground">All customer ride requests</p>
           </div>
           <Button variant="outline" onClick={() => signOut()}>
             Sign Out
@@ -98,14 +125,14 @@ const DriverDashboard = () => {
         ) : bookings.length === 0 ? (
           <Card>
             <CardContent className="py-10 text-center text-muted-foreground">
-              No trips assigned yet. Check back soon.
+              No customer bookings yet.
             </CardContent>
           </Card>
         ) : (
           <div className="grid gap-8">
             {active.length > 0 && (
               <section>
-                <h2 className="text-xl font-semibold mb-3">Active Trips ({active.length})</h2>
+                <h2 className="text-xl font-semibold mb-3">Active Requests ({active.length})</h2>
                 <div className="grid gap-4">
                   {active.map((b) => (
                     <BookingCard
@@ -120,7 +147,7 @@ const DriverDashboard = () => {
             )}
             {past.length > 0 && (
               <section>
-                <h2 className="text-xl font-semibold mb-3">History</h2>
+                <h2 className="text-xl font-semibold mb-3">History ({past.length})</h2>
                 <div className="grid gap-4">
                   {past.map((b) => (
                     <BookingCard key={b.id} b={b} />
@@ -140,7 +167,7 @@ const BookingCard = ({
   updating,
   onStatusChange,
 }: {
-  b: AssignedBooking;
+  b: CustomerBooking;
   updating?: boolean;
   onStatusChange?: (status: string) => void;
 }) => (
@@ -151,7 +178,7 @@ const BookingCard = ({
           <CardTitle className="text-lg capitalize">
             {b.vehicle_type} · {b.trip_type.replace("_", " ")}
           </CardTitle>
-          <CardDescription>Booked {new Date(b.created_at).toLocaleDateString()}</CardDescription>
+          <CardDescription>Booked {new Date(b.created_at).toLocaleString()}</CardDescription>
         </div>
         <Badge variant={statusVariant(b.status)} className="capitalize">
           {b.status.replace("_", " ")}
@@ -160,25 +187,23 @@ const BookingCard = ({
     </CardHeader>
     <CardContent className="grid gap-2 text-sm">
       <div className="flex items-center gap-2">
-        <User className="w-4 h-4 text-primary" /> {b.customer_name}
+        <User className="w-4 h-4 text-primary" /> {b.customer_name ?? "Customer"}
       </div>
-      <div className="flex items-center gap-2">
-        <Phone className="w-4 h-4 text-primary" />
-        <a href={`tel:${b.mobile_number}`} className="text-primary underline">
-          {b.mobile_number}
-        </a>
+      {b.customer_phone && (
+        <div className="flex items-center gap-2">
+          <Phone className="w-4 h-4 text-primary" />
+          <a href={`tel:${b.customer_phone}`} className="text-primary underline">
+            {b.customer_phone}
+          </a>
+        </div>
+      )}
+      <div className="flex items-start gap-2">
+        <MapPin className="w-4 h-4 mt-0.5 text-primary" />
+        <span><b>From:</b> {b.pickup_location}</span>
       </div>
       <div className="flex items-start gap-2">
-        <MapPin className="w-4 h-4 mt-0.5 text-primary" />{" "}
-        <span>
-          <b>From:</b> {b.pickup_location}
-        </span>
-      </div>
-      <div className="flex items-start gap-2">
-        <MapPin className="w-4 h-4 mt-0.5 text-secondary" />{" "}
-        <span>
-          <b>To:</b> {b.drop_location}
-        </span>
+        <MapPin className="w-4 h-4 mt-0.5 text-secondary" />
+        <span><b>To:</b> {b.drop_location}</span>
       </div>
       <div className="flex flex-wrap gap-4 text-muted-foreground">
         <span className="flex items-center gap-1">
@@ -187,10 +212,20 @@ const BookingCard = ({
         <span className="flex items-center gap-1">
           <Clock className="w-4 h-4" /> {b.booking_time}
         </span>
+        {b.distance_km != null && (
+          <span className="flex items-center gap-1">
+            <Route className="w-4 h-4" /> {b.distance_km} km
+          </span>
+        )}
+        {b.estimated_fare != null && (
+          <span className="flex items-center gap-1">
+            <IndianRupee className="w-4 h-4" /> {b.estimated_fare}
+          </span>
+        )}
       </div>
-      {b.additional_message && (
+      {b.notes && (
         <div className="mt-1 rounded-md bg-muted p-2 text-muted-foreground">
-          <b>Note:</b> {b.additional_message}
+          <b>Note:</b> {b.notes}
         </div>
       )}
       {onStatusChange && (
