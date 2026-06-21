@@ -41,7 +41,7 @@ const DriverDashboard = () => {
   const fetchBookings = async () => {
     setLoading(true);
     const { data, error } = await supabase
-      .from("customer_bookings")
+      .from("bookings")
       .select("*")
       .eq("driver_id", user!.id)
       .order("booking_date", { ascending: true });
