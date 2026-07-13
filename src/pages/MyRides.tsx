@@ -53,8 +53,33 @@ const MyRides = () => {
       setBookings((data as Booking[]) ?? []);
       setFetching(false);
     })();
-    return () => { cancelled = true; };
+
+    const channel = supabase
+      .channel(`customer_bookings_${user.id}`)
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'customer_bookings', filter: `user_id=eq.${user.id}` },
+        (payload) => {
+          if (payload.eventType === 'INSERT') {
+            setBookings((prev) => [payload.new as Booking, ...prev]);
+          } else if (payload.eventType === 'UPDATE') {
+            const updated = payload.new as Booking;
+            setBookings((prev) => prev.map((b) => (b.id === updated.id ? updated : b)));
+            toast({ title: 'Ride updated', description: `Status: ${updated.status.replace('_', ' ')}` });
+          } else if (payload.eventType === 'DELETE') {
+            const old = payload.old as Booking;
+            setBookings((prev) => prev.filter((b) => b.id !== old.id));
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      cancelled = true;
+      supabase.removeChannel(channel);
+    };
   }, [user, toast]);
+
 
   const cancelBooking = async (id: string) => {
     const { error } = await supabase.from('customer_bookings').update({ status: 'cancelled' }).eq('id', id);
