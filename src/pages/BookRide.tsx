@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { z } from 'zod';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useIsDriver } from '@/hooks/useIsDriver';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -26,6 +27,7 @@ const schema = z.object({
 
 const BookRide = () => {
   const { user, loading } = useAuth();
+  const { isDriver, loading: driverLoading } = useIsDriver();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [busy, setBusy] = useState(false);
@@ -40,8 +42,10 @@ const BookRide = () => {
   const [notes, setNotes] = useState('');
 
   useEffect(() => {
-    if (!loading && !user) navigate('/auth', { replace: true });
-  }, [user, loading, navigate]);
+    if (loading || driverLoading) return;
+    if (!user) navigate('/auth', { replace: true });
+    else if (isDriver) navigate('/driver', { replace: true });
+  }, [user, loading, isDriver, driverLoading, navigate]);
 
   const distanceNum = parseFloat(distance) || 0;
   const fare = useMemo(() => {
