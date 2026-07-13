@@ -1,5 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+
+const routeForRoles = (roles: string[]) => {
+  if (roles.includes('admin')) return '/admin_b_d_s';
+  if (roles.includes('driver')) return '/driver';
+  return '/my-rides';
+};
 import { Helmet } from 'react-helmet-async';
 import { z } from 'zod';
 import { supabase } from '@/integrations/supabase/client';
