@@ -22,15 +22,7 @@ const DriverRoute = ({ children }: { children: ReactNode }) => {
   }
 
   if (!isDriver) {
-    return (
-      <div className="container mx-auto flex min-h-[60vh] flex-col items-center justify-center gap-3 px-4 text-center">
-        <h1 className="text-2xl font-semibold">Driver access required</h1>
-        <p className="text-muted-foreground">
-          Your account doesn't have driver access yet. Apply at{' '}
-          <a href="/become-a-driver" className="text-primary underline">/become-a-driver</a>.
-        </p>
-      </div>
-    );
+    return <Navigate to="/my-rides" replace />;
   }
 
   return <>{children}</>;
