@@ -34,7 +34,11 @@ const Auth = () => {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    if (!loading && user) navigate('/my-rides', { replace: true });
+    if (loading || !user) return;
+    (async () => {
+      const { data } = await supabase.from('user_roles').select('role').eq('user_id', user.id);
+      navigate(routeForRoles((data ?? []).map((r) => r.role as string)), { replace: true });
+    })();
   }, [user, loading, navigate]);
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -46,13 +50,14 @@ const Auth = () => {
       return;
     }
     setBusy(true);
-    const { error } = await supabase.auth.signInWithPassword(parsed.data);
+    const { data: signIn, error } = await supabase.auth.signInWithPassword(parsed.data);
     setBusy(false);
-    if (error) {
-      toast({ title: 'Sign in failed', description: error.message, variant: 'destructive' });
+    if (error || !signIn.user) {
+      toast({ title: 'Sign in failed', description: error?.message ?? 'Unknown error', variant: 'destructive' });
       return;
     }
-    navigate('/my-rides');
+    const { data: roles } = await supabase.from('user_roles').select('role').eq('user_id', signIn.user.id);
+    navigate(routeForRoles((roles ?? []).map((r) => r.role as string)));
   };
 
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
