@@ -832,6 +832,10 @@ const Admin = () => {
           <TabsContent value="drivers" className="space-y-6">
             <DriverApplicationsTab />
           </TabsContent>
+
+          <TabsContent value="wallets" className="space-y-6">
+            <WalletManagementTab />
+          </TabsContent>
         </Tabs>
       </div>
     </div>
