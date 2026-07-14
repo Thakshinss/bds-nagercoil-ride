@@ -27,6 +27,7 @@ import { AuthProvider } from "./hooks/useAuth";
 import AdminRoute from "./components/AdminRoute";
 import DriverRoute from "./components/DriverRoute";
 import DriverDashboard from "./pages/DriverDashboard";
+import DriverWallet from "./pages/DriverWallet";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +58,7 @@ const App = () => (
               <Route path="/my-rides" element={<MyRides />} />
               <Route path="/become-a-driver" element={<BecomeDriver />} />
               <Route path="/driver" element={<DriverRoute><DriverDashboard /></DriverRoute>} />
+              <Route path="/wallet" element={<DriverRoute><DriverWallet /></DriverRoute>} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
