@@ -89,7 +89,9 @@ const DriverDashboard = () => {
 
   const updateStatus = async (id: string, status: string) => {
     setUpdatingId(id);
-    const { error } = await supabase.from("customer_bookings").update({ status }).eq("id", id);
+    const payload: { status: string; driver_id?: string } = { status };
+    if (user) payload.driver_id = user.id;
+    const { error } = await supabase.from("customer_bookings").update(payload).eq("id", id);
     if (error) {
       toast({ title: "Update failed", description: error.message, variant: "destructive" });
     } else {
