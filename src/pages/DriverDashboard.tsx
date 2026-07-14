@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { MapPin, Calendar, Clock, Phone, User, Loader2, IndianRupee, Route } from "lucide-react";
+import { MapPin, Calendar, Clock, Phone, User, Loader2, IndianRupee, Route, Wallet } from "lucide-react";
 
 interface CustomerBooking {
   id: string;
@@ -88,7 +89,9 @@ const DriverDashboard = () => {
 
   const updateStatus = async (id: string, status: string) => {
     setUpdatingId(id);
-    const { error } = await supabase.from("customer_bookings").update({ status }).eq("id", id);
+    const payload: { status: string; driver_id?: string } = { status };
+    if (user) payload.driver_id = user.id;
+    const { error } = await supabase.from("customer_bookings").update(payload).eq("id", id);
     if (error) {
       toast({ title: "Update failed", description: error.message, variant: "destructive" });
     } else {
@@ -113,9 +116,14 @@ const DriverDashboard = () => {
             <h1 className="text-3xl font-bold text-blue-950">Driver Dashboard</h1>
             <p className="text-muted-foreground">All customer ride requests</p>
           </div>
-          <Button variant="outline" onClick={() => signOut()}>
-            Sign Out
-          </Button>
+          <div className="flex gap-2">
+            <Button asChild variant="default">
+              <Link to="/wallet"><Wallet className="w-4 h-4 mr-2" /> My Wallet</Link>
+            </Button>
+            <Button variant="outline" onClick={() => signOut()}>
+              Sign Out
+            </Button>
+          </div>
         </div>
 
         {loading ? (
