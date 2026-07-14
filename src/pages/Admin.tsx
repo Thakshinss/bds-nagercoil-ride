@@ -22,6 +22,7 @@ import { TourPackageForm } from '@/components/TourPackageForm';
 import BannerContentForm from '@/components/BannerContentForm';
 import { CarForm } from '@/components/CarForm';
 import DriverApplicationsTab from '@/components/admin/DriverApplicationsTab';
+import WalletManagementTab from '@/components/admin/WalletManagementTab';
 import { useToast } from '@/hooks/use-toast';
 
 const Admin = () => {
@@ -392,13 +393,14 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="fares" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="fares">Fares</TabsTrigger>
             <TabsTrigger value="packages">Packages</TabsTrigger>
             <TabsTrigger value="banner">Banner</TabsTrigger>
             <TabsTrigger value="bookings">Bookings</TabsTrigger>
             <TabsTrigger value="cars">Cars</TabsTrigger>
             <TabsTrigger value="drivers">Drivers</TabsTrigger>
+            <TabsTrigger value="wallets">Wallets</TabsTrigger>
           </TabsList>
 
           {/* Fares Tab */}
