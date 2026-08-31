@@ -3,6 +3,8 @@ import { NavLink } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Menu, X, Phone, Download } from 'lucide-react';
 import cabimg from "../assets/bds_new_logo.png"
+import ScrollingBanner from './ScrollingBanner';
+
 
 
 const handleCall = () => {
@@ -114,7 +116,11 @@ const Navigation = () => {
           </div>
         )}
       </div>
+      <div className="border-t border-border">
+        <ScrollingBanner />
+      </div>
     </nav>
+
   );
 };
 

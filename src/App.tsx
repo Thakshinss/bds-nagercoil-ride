@@ -30,8 +30,8 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
         <div className="min-h-screen flex flex-col">
-          <ScrollingBanner />
           <Navigation />
+
           <main className="flex-1">
             <Routes>
               <Route path="/" element={<Homepage />} />
