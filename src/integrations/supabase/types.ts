@@ -41,6 +41,39 @@ export type Database = {
         }
         Relationships: []
       }
+      banner_images: {
+        Row: {
+          alt_text: string
+          created_at: string
+          display_order: number
+          id: string
+          image_url: string
+          is_active: boolean
+          link_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          alt_text?: string
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url: string
+          is_active?: boolean
+          link_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          alt_text?: string
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url?: string
+          is_active?: boolean
+          link_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       bookings: {
         Row: {
           additional_message: string | null
