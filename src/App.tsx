@@ -16,7 +16,6 @@ import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import Navigation from "./components/Navigation";
-import ScrollingBanner from "./components/ScrollingBanner";
 import Footer from "./components/Footer";
 import WhatsAppButton from "./components/WhatsAppButton";
 
@@ -30,8 +29,8 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
         <div className="min-h-screen flex flex-col">
-          <ScrollingBanner />
           <Navigation />
+
           <main className="flex-1">
             <Routes>
               <Route path="/" element={<Homepage />} />
