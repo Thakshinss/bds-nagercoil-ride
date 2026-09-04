@@ -679,6 +679,65 @@ const Admin = () => {
             </div>
           </TabsContent>
 
+          {/* Banner Images Tab */}
+          <TabsContent value="banner_images" className="space-y-6">
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <h3 className="text-lg font-semibold">Banner Images (16:9 carousel)</h3>
+                <Button onClick={() => setIsAddingBannerImage(true)}>Add Banner Image</Button>
+              </div>
+
+              {isAddingBannerImage && (
+                <Card>
+                  <CardHeader><CardTitle>Add Banner Image</CardTitle></CardHeader>
+                  <CardContent>
+                    <BannerImageForm
+                      onSubmit={handleBannerImageAdd}
+                      onCancel={() => setIsAddingBannerImage(false)}
+                    />
+                  </CardContent>
+                </Card>
+              )}
+
+              {editingBannerImage && (
+                <Card>
+                  <CardHeader><CardTitle>Edit Banner Image</CardTitle></CardHeader>
+                  <CardContent>
+                    <BannerImageForm
+                      bannerImage={editingBannerImage}
+                      onSubmit={(banner) => handleBannerImageUpdate(editingBannerImage.id, banner)}
+                      onCancel={() => setEditingBannerImage(null)}
+                    />
+                  </CardContent>
+                </Card>
+              )}
+
+              <div className="grid gap-4 md:grid-cols-2">
+                {bannerImages.map((banner) => (
+                  <Card key={banner.id}>
+                    <CardContent className="p-4 space-y-3">
+                      <div className="aspect-video w-full overflow-hidden rounded-lg bg-muted">
+                        <img src={banner.image_url} alt={banner.alt_text} className="h-full w-full object-cover" />
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Order: {banner.display_order} | Status: {banner.is_active ? 'Active' : 'Inactive'}
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button variant="outline" size="sm" onClick={() => setEditingBannerImage(banner)}>Edit</Button>
+                        <Button variant="destructive" size="sm" onClick={() => handleBannerImageDelete(banner.id)}>Delete</Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+                {bannerImages.length === 0 && (
+                  <p className="text-sm text-muted-foreground">No banner images yet.</p>
+                )}
+              </div>
+            </div>
+          </TabsContent>
+
+
+
           {/* Bookings Tab */}
           <TabsContent value="bookings" className="space-y-6">
             <Card className="shadow-custom-lg">
