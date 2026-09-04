@@ -580,13 +580,6 @@ export type Database = {
           isSetofReturn: false
         }
       }
-      has_role: {
-        Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
-        Returns: boolean
-      }
       process_withdrawal: {
         Args: {
           _new_status: Database["public"]["Enums"]["withdrawal_status"]
