@@ -20,6 +20,9 @@ import { carService, Car } from '@/services/carData';
 import { FareForm } from '@/components/FareForm';
 import { TourPackageForm } from '@/components/TourPackageForm';
 import BannerContentForm from '@/components/BannerContentForm';
+import BannerImageForm from '@/components/BannerImageForm';
+import { bannerImageService, BannerImage, BannerImageInput } from '@/services/bannerImageData';
+
 import { CarForm } from '@/components/CarForm';
 import { useToast } from '@/hooks/use-toast';
 
@@ -37,15 +40,61 @@ const Admin = () => {
   const [showPackageForm, setShowPackageForm] = useState(false);
   const [showCarForm, setShowCarForm] = useState(false);
   const [isAddingBannerContent, setIsAddingBannerContent] = useState(false);
+  const [bannerImages, setBannerImages] = useState<BannerImage[]>([]);
+  const [editingBannerImage, setEditingBannerImage] = useState<BannerImage | null>(null);
+  const [isAddingBannerImage, setIsAddingBannerImage] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
     loadFares();
     loadPackages();
     loadBannerContent();
+    loadBannerImages();
     loadBookings();
     loadCars();
   }, []);
+
+  const loadBannerImages = async () => {
+    try {
+      setBannerImages(await bannerImageService.getAll());
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to load banner images", variant: "destructive" });
+    }
+  };
+
+  const handleBannerImageAdd = async (banner: BannerImageInput) => {
+    try {
+      const created = await bannerImageService.create(banner);
+      setBannerImages(prev => [...prev, created]);
+      setIsAddingBannerImage(false);
+      toast({ title: "Success", description: "Banner image added" });
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to add banner image", variant: "destructive" });
+    }
+  };
+
+  const handleBannerImageUpdate = async (id: string, banner: BannerImageInput) => {
+    try {
+      const updated = await bannerImageService.update(id, banner);
+      setBannerImages(prev => prev.map(b => (b.id === id ? updated : b)));
+      setEditingBannerImage(null);
+      toast({ title: "Success", description: "Banner image updated" });
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to update banner image", variant: "destructive" });
+    }
+  };
+
+  const handleBannerImageDelete = async (id: string) => {
+    try {
+      await bannerImageService.delete(id);
+      setBannerImages(prev => prev.filter(b => b.id !== id));
+      toast({ title: "Success", description: "Banner image deleted" });
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to delete banner image", variant: "destructive" });
+    }
+  };
+
+
 
   const loadFares = async () => {
     const fareData = await fareDataService.getAllFares();
@@ -391,13 +440,15 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="fares" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-3 md:grid-cols-6">
             <TabsTrigger value="fares">Fare Management</TabsTrigger>
             <TabsTrigger value="packages">Tour Packages</TabsTrigger>
             <TabsTrigger value="banner">Banner Content</TabsTrigger>
+            <TabsTrigger value="banner_images">Banner Images</TabsTrigger>
             <TabsTrigger value="bookings">Bookings</TabsTrigger>
             <TabsTrigger value="cars">Cars</TabsTrigger>
           </TabsList>
+
 
           {/* Fares Tab */}
           <TabsContent value="fares" className="space-y-6">
@@ -627,6 +678,65 @@ const Admin = () => {
               </div>
             </div>
           </TabsContent>
+
+          {/* Banner Images Tab */}
+          <TabsContent value="banner_images" className="space-y-6">
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <h3 className="text-lg font-semibold">Banner Images (16:9 carousel)</h3>
+                <Button onClick={() => setIsAddingBannerImage(true)}>Add Banner Image</Button>
+              </div>
+
+              {isAddingBannerImage && (
+                <Card>
+                  <CardHeader><CardTitle>Add Banner Image</CardTitle></CardHeader>
+                  <CardContent>
+                    <BannerImageForm
+                      onSubmit={handleBannerImageAdd}
+                      onCancel={() => setIsAddingBannerImage(false)}
+                    />
+                  </CardContent>
+                </Card>
+              )}
+
+              {editingBannerImage && (
+                <Card>
+                  <CardHeader><CardTitle>Edit Banner Image</CardTitle></CardHeader>
+                  <CardContent>
+                    <BannerImageForm
+                      bannerImage={editingBannerImage}
+                      onSubmit={(banner) => handleBannerImageUpdate(editingBannerImage.id, banner)}
+                      onCancel={() => setEditingBannerImage(null)}
+                    />
+                  </CardContent>
+                </Card>
+              )}
+
+              <div className="grid gap-4 md:grid-cols-2">
+                {bannerImages.map((banner) => (
+                  <Card key={banner.id}>
+                    <CardContent className="p-4 space-y-3">
+                      <div className="aspect-video w-full overflow-hidden rounded-lg bg-muted">
+                        <img src={banner.image_url} alt={banner.alt_text} className="h-full w-full object-cover" />
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Order: {banner.display_order} | Status: {banner.is_active ? 'Active' : 'Inactive'}
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button variant="outline" size="sm" onClick={() => setEditingBannerImage(banner)}>Edit</Button>
+                        <Button variant="destructive" size="sm" onClick={() => handleBannerImageDelete(banner.id)}>Delete</Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+                {bannerImages.length === 0 && (
+                  <p className="text-sm text-muted-foreground">No banner images yet.</p>
+                )}
+              </div>
+            </div>
+          </TabsContent>
+
+
 
           {/* Bookings Tab */}
           <TabsContent value="bookings" className="space-y-6">
