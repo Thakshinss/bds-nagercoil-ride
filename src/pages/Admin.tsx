@@ -40,15 +40,61 @@ const Admin = () => {
   const [showPackageForm, setShowPackageForm] = useState(false);
   const [showCarForm, setShowCarForm] = useState(false);
   const [isAddingBannerContent, setIsAddingBannerContent] = useState(false);
+  const [bannerImages, setBannerImages] = useState<BannerImage[]>([]);
+  const [editingBannerImage, setEditingBannerImage] = useState<BannerImage | null>(null);
+  const [isAddingBannerImage, setIsAddingBannerImage] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
     loadFares();
     loadPackages();
     loadBannerContent();
+    loadBannerImages();
     loadBookings();
     loadCars();
   }, []);
+
+  const loadBannerImages = async () => {
+    try {
+      setBannerImages(await bannerImageService.getAll());
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to load banner images", variant: "destructive" });
+    }
+  };
+
+  const handleBannerImageAdd = async (banner: BannerImageInput) => {
+    try {
+      const created = await bannerImageService.create(banner);
+      setBannerImages(prev => [...prev, created]);
+      setIsAddingBannerImage(false);
+      toast({ title: "Success", description: "Banner image added" });
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to add banner image", variant: "destructive" });
+    }
+  };
+
+  const handleBannerImageUpdate = async (id: string, banner: BannerImageInput) => {
+    try {
+      const updated = await bannerImageService.update(id, banner);
+      setBannerImages(prev => prev.map(b => (b.id === id ? updated : b)));
+      setEditingBannerImage(null);
+      toast({ title: "Success", description: "Banner image updated" });
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to update banner image", variant: "destructive" });
+    }
+  };
+
+  const handleBannerImageDelete = async (id: string) => {
+    try {
+      await bannerImageService.delete(id);
+      setBannerImages(prev => prev.filter(b => b.id !== id));
+      toast({ title: "Success", description: "Banner image deleted" });
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to delete banner image", variant: "destructive" });
+    }
+  };
+
+
 
   const loadFares = async () => {
     const fareData = await fareDataService.getAllFares();
