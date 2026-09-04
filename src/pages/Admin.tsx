@@ -440,13 +440,15 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="fares" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-3 md:grid-cols-6">
             <TabsTrigger value="fares">Fare Management</TabsTrigger>
             <TabsTrigger value="packages">Tour Packages</TabsTrigger>
             <TabsTrigger value="banner">Banner Content</TabsTrigger>
+            <TabsTrigger value="banner_images">Banner Images</TabsTrigger>
             <TabsTrigger value="bookings">Bookings</TabsTrigger>
             <TabsTrigger value="cars">Cars</TabsTrigger>
           </TabsList>
+
 
           {/* Fares Tab */}
           <TabsContent value="fares" className="space-y-6">
