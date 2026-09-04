@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Menu, X, Phone, Download } from 'lucide-react';
 import cabimg from "../assets/bds_new_logo.png"
 import ScrollingBanner from './ScrollingBanner';
+import ImageBannerCarousel from './ImageBannerCarousel';
+
 
 
 

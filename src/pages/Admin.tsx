@@ -20,6 +20,9 @@ import { carService, Car } from '@/services/carData';
 import { FareForm } from '@/components/FareForm';
 import { TourPackageForm } from '@/components/TourPackageForm';
 import BannerContentForm from '@/components/BannerContentForm';
+import BannerImageForm from '@/components/BannerImageForm';
+import { bannerImageService, BannerImage, BannerImageInput } from '@/services/bannerImageData';
+
 import { CarForm } from '@/components/CarForm';
 import { useToast } from '@/hooks/use-toast';
 
