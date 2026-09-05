@@ -4,6 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { ArrowRight, Star, Clock, Shield, Phone, Download, Smartphone } from 'lucide-react';
 import heroBackground from '@/assets/hero-taxi-background.jpg';
 import BookingForm from '@/components/BookingForm';
+import ImageBannerCarousel from '@/components/ImageBannerCarousel';
 import { Helmet } from 'react-helmet-async';
 import { useEffect, useState } from 'react';
 import { bannerContentService, BannerContent } from '@/services/bannerContentData';
