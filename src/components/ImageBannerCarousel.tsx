@@ -4,6 +4,8 @@ import { bannerImageService, BannerImage } from '@/services/bannerImageData';
 const ImageBannerCarousel = () => {
   const [banners, setBanners] = useState<BannerImage[]>([]);
   const [index, setIndex] = useState(0);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef<number | null>(null);
 
   useEffect(() => {
     bannerImageService
@@ -19,6 +21,23 @@ const ImageBannerCarousel = () => {
     }, 5000);
     return () => clearInterval(timer);
   }, [banners.length]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.changedTouches[0].screenX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null || banners.length <= 1) return;
+    const endX = e.changedTouches[0].screenX;
+    const diff = touchStartX.current - endX;
+    const threshold = 40;
+    if (diff > threshold) {
+      setIndex((prev) => (prev + 1) % banners.length);
+    } else if (diff < -threshold) {
+      setIndex((prev) => (prev - 1 + banners.length) % banners.length);
+    }
+    touchStartX.current = null;
+  };
 
   if (banners.length === 0) return null;
 
