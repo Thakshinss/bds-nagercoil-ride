@@ -24,7 +24,7 @@ const ImageBannerCarousel = () => {
 
   return (
     <div className="w-full flex justify-center py-2">
-      <div className="w-full sm:w-3/4 lg:w-1/2 px-4">
+      <div className="w-full md:w-5/6 lg:w-4/5 px-4">
         <div
           className="relative overflow-hidden rounded-xl shadow-custom-md"
           role="region"
