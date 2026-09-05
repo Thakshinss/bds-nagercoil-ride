@@ -125,7 +125,9 @@ const Homepage = () => {
           <BookingForm />
 
           {/* Image Banner Carousel */}
-          <ImageBannerCarousel />
+          <div className="mt-8">
+            <ImageBannerCarousel />
+          </div>
         </div>
       </section>
 
