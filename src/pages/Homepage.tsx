@@ -123,6 +123,9 @@ const Homepage = () => {
           
           {/* Booking Form */}
           <BookingForm />
+
+          {/* Image Banner Carousel */}
+          <ImageBannerCarousel />
         </div>
       </section>
 
