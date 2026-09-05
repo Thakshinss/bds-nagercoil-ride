@@ -16,6 +16,7 @@ import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import Navigation from "./components/Navigation";
+import AdminGate from "./components/AdminGate";
 import Footer from "./components/Footer";
 import WhatsAppButton from "./components/WhatsAppButton";
 
