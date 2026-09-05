@@ -119,7 +119,6 @@ const Navigation = () => {
       </div>
       <div className="border-t border-border">
         <ScrollingBanner />
-        <ImageBannerCarousel />
       </div>
 
     </nav>
