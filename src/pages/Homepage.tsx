@@ -123,11 +123,13 @@ const Homepage = () => {
           
           {/* Booking Form */}
           <BookingForm />
+        </div>
+      </section>
 
-          {/* Image Banner Carousel */}
-          <div className="mt-8">
-            <ImageBannerCarousel />
-          </div>
+      {/* Image Banner Carousel Section */}
+      <section className="py-8 bg-muted">
+        <div className="px-4 max-w-7xl mx-auto">
+          <ImageBannerCarousel />
         </div>
       </section>
 
