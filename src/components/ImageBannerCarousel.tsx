@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { bannerImageService, BannerImage } from '@/services/bannerImageData';
 
 const ImageBannerCarousel = () => {
