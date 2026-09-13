@@ -48,23 +48,21 @@ export const bookingService = {
     }
   },
 
-  async createBooking(bookingData: BookingFormData): Promise<Booking | null> {
+  async createBooking(bookingData: BookingFormData): Promise<boolean> {
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('bookings')
-        .insert([bookingData])
-        .select()
-        .single();
+        .insert([bookingData]);
 
       if (error) {
         console.error('Error creating booking:', error);
-        return null;
+        return false;
       }
 
-      return data;
+      return true;
     } catch (error) {
       console.error('Error creating booking:', error);
-      return null;
+      return false;
     }
   },
 
